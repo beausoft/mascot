@@ -2,6 +2,7 @@
 #include<Windows.h>
 #include <windowsx.h>
 #include <vector>
+#include "resource.h"
 
 typedef struct tagACTION {
 	UINT sound;
@@ -30,7 +31,7 @@ public:
 	void Show();       // 显示窗口
 	void Hidden();     // 隐藏窗口
 	void SetShapeFromBitmap(UINT uIDBitmap);    // 根据位图设置形状
-	const int CreateAction(const UINT *frames, int framesLength, int interval, UINT sound);
+	const int CreateAction(const UINT* frames, int framesLength, int interval, UINT sound);
 	void PerformAnimation(UINT actionIndex);
 private:
 	void UpdateShape(HDC hdc);

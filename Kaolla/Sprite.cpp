@@ -1,4 +1,5 @@
 #include "Sprite.h"
+#include "OptionsDlg.h"
 
 Sprite::Sprite(HINSTANCE hInstance, LPCWSTR spriteName, INT x, INT y, INT nWidth, INT nHeight)
 {
@@ -122,7 +123,7 @@ void Sprite::PerformAnimation(UINT actionIndex)
             SetTimer(GetHandle(), IDT_ANIMATION, action->interval, NULL);
         }
     }
-    
+
 }
 
 void Sprite::UpdateShape(HDC hdc)

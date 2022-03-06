@@ -72,6 +72,61 @@ IDR_WAVE4               WAVE                    "sounds\\00004.wav"
 
 IDR_WAVE5               WAVE                    "sounds\\00005.wav"
 
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_OPTIONSBOX DIALOGEX 0, 0, 195, 131
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Options"
+FONT 9, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,84,112,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,140,112,50,14
+    GROUPBOX        "Position On Cruuent Window",IDC_STATIC,5,5,185,40
+    LTEXT           "Left",IDC_STATIC,12,24,15,8
+    CONTROL         "Slider1",IDC_SWINPOS,"msctls_trackbar32",TBS_AUTOTICKS | WS_TABSTOP,30,20,100,20
+    LTEXT           "Right",IDC_STATIC,132,24,20,8
+    EDITTEXT        IDC_EWNDPOS,155,20,20,14,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "%",IDC_STATIC,180,24,8,8
+    GROUPBOX        "Window Selection",IDC_STATIC,5,50,87,55,WS_GROUP
+    CONTROL         "Either",IDC_REITHER,"Button",BS_AUTORADIOBUTTON,12,60,58,10
+    CONTROL         "Start Menu",IDC_RSTARTMENU,"Button",BS_AUTORADIOBUTTON,12,75,65,10
+    CONTROL         "Active Window",IDC_RACTIVEWINDOW,"Button",BS_AUTORADIOBUTTON,12,90,72,10
+    CONTROL         "Sound",IDC_CSOUND,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,100,75,58,10
+    CONTROL         "Animation",IDC_CANIMATION,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,100,92,92,10
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO
+BEGIN
+    IDD_OPTIONSBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        TOPMARGIN, 7
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// AFX_DIALOG_LAYOUT
+//
+
+IDD_OPTIONSBOX AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
 #endif    // 中文(简体，中国) resources
 /////////////////////////////////////////////////////////////////////////////
 

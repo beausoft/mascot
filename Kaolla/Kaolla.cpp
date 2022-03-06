@@ -1,5 +1,7 @@
-#include "../Mascot/Sprite.h"
+#include "Sprite.h"
 #include "resource.h"
+#include "OptionsDlg.h"
+
 
 Sprite *pS = NULL;
 
@@ -21,21 +23,12 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
     SetTimer(s.GetHandle(), 100002, 500, test);
 
-    
+    Options options;
+    options.selection = ActiveWindow;
+    options.SOUND = TRUE;
+    options.ANIMATION = TRUE;
+    OptionsDlg::ShowDialog(hInstance, s.GetHandle(), &options);
 
-    /*
-    Action blink;
-    blink.AddFrame(IDB_BLINK_1);
-    blink.AddFrame(IDB_BLINK_2);
-    blink.AddFrame(IDB_USUAL);
-    blink.SetSound(IDR_WAVE1);
-
-    for (int i = 0; i < blink.GetFrameLength(); i++) {
-        int a = blink.GetFrameLength();
-        UINT rid = blink.GetFrame(i);
-        int c = 0;
-    }
-    */
 
     MSG msg;
     while (GetMessage(&msg, nullptr, 0, 0))
