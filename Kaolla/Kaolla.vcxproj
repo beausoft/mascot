@@ -155,10 +155,20 @@
     <ResourceCompile Include="Resource.rc" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="images\blink\136.bmp" />
+    <Image Include="images\blink\137.bmp" />
+    <Image Include="images\blink\138.bmp" />
     <Image Include="images\usual.bmp" />
   </ItemGroup>
   <ItemGroup>
     <Manifest Include="app.manifest" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="sounds\00001.wav" />
+    <Media Include="sounds\00002.wav" />
+    <Media Include="sounds\00003.wav" />
+    <Media Include="sounds\00004.wav" />
+    <Media Include="sounds\00005.wav" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

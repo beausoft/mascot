@@ -52,6 +52,26 @@ END
 
 IDB_USUAL               BITMAP                  "images\\usual.bmp"
 
+IDB_BLINK_1             BITMAP                  "images\\blink\\136.bmp"
+
+IDB_BLINK_2             BITMAP                  "images\\blink\\137.bmp"
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// WAVE
+//
+
+IDR_WAVE1               WAVE                    "sounds\\00001.wav"
+
+IDR_WAVE2               WAVE                    "sounds\\00002.wav"
+
+IDR_WAVE3               WAVE                    "sounds\\00003.wav"
+
+IDR_WAVE4               WAVE                    "sounds\\00004.wav"
+
+IDR_WAVE5               WAVE                    "sounds\\00005.wav"
+
 #endif    // 中文(简体，中国) resources
 /////////////////////////////////////////////////////////////////////////////
 

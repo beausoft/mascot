@@ -15,12 +15,12 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Widget.h">
+    <ClInclude Include="Sprite.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Widget.cpp">
+    <ClCompile Include="Sprite.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

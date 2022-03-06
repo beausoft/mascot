@@ -33,10 +33,36 @@
     <Image Include="images\usual.bmp">
       <Filter>资源文件</Filter>
     </Image>
+    <Image Include="images\blink\136.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\blink\137.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\blink\138.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Manifest Include="app.manifest">
       <Filter>资源文件</Filter>
     </Manifest>
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="sounds\00001.wav">
+      <Filter>资源文件</Filter>
+    </Media>
+    <Media Include="sounds\00002.wav">
+      <Filter>资源文件</Filter>
+    </Media>
+    <Media Include="sounds\00003.wav">
+      <Filter>资源文件</Filter>
+    </Media>
+    <Media Include="sounds\00004.wav">
+      <Filter>资源文件</Filter>
+    </Media>
+    <Media Include="sounds\00005.wav">
+      <Filter>资源文件</Filter>
+    </Media>
   </ItemGroup>
 </Project>
