@@ -19,7 +19,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
     UINT blinkFrames[] = { IDB_BLINK_1 ,IDB_BLINK_2 , IDB_USUAL };
     int blink = s.CreateAction(blinkFrames, 3, 50, IDR_WAVE1);
 
-    SetTimer(s.GetHandle(), 100002, 2000, test);
+    SetTimer(s.GetHandle(), 100002, 500, test);
 
     
 

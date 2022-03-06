@@ -115,6 +115,7 @@ void Sprite::PerformAnimation(UINT actionIndex)
     if (actionIndex >= 0 && actionIndex < m_Actions.size()) {
         if (m_AnimationStatus.running == FALSE) {
             LPACTION action = m_Actions.at(actionIndex);
+            PlaySound(MAKEINTRESOURCE(action->sound), m_hInstance, SND_ASYNC | SND_RESOURCE | SND_NODEFAULT | SND_NOWAIT);
             m_AnimationStatus.running = TRUE;
             m_AnimationStatus.actionIndex = actionIndex;
             m_AnimationStatus.frameIndex = 0;
