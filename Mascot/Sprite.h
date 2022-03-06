@@ -10,6 +10,14 @@ typedef struct tagACTION {
 	UINT frames[1];
 }ACTION, * LPACTION;
 
+struct AnimationStatus {
+	BOOL running;
+	int actionIndex;
+	int frameIndex;
+};
+
+constexpr auto IDT_ANIMATION = 10005;
+
 class Sprite
 {
 public:
@@ -23,7 +31,7 @@ public:
 	void Hidden();     // 隐藏窗口
 	void SetShapeFromBitmap(UINT uIDBitmap);    // 根据位图设置形状
 	const int CreateAction(const UINT *frames, int framesLength, int interval, UINT sound);
-	// void PerformAnimation(Action* action);
+	void PerformAnimation(UINT actionIndex);
 private:
 	void UpdateShape(HDC hdc);
 private:
@@ -33,9 +41,11 @@ private:
 	UINT OnNCHitTest(HWND hwnd, int x, int y);
 	void OnPaint(HWND hwnd);
 	void OnActivate(HWND hwnd, UINT state, HWND hwndActDeact, BOOL fMinimized);
+	void OnTimer(HWND hwnd, UINT id);
 private:
 	HWND m_hWnd = NULL;
 	HINSTANCE m_hInstance = NULL;
 	UINT m_uIDBitmap = NULL;
 	std::vector<LPACTION> m_Actions;
+	AnimationStatus m_AnimationStatus = { FALSE, 0, 0 };
 };

@@ -65,6 +65,7 @@ LRESULT Sprite::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             HANDLE_MSG(hWnd, WM_NCHITTEST, pSprite->OnNCHitTest);
             HANDLE_MSG(hWnd, WM_PAINT, pSprite->OnPaint);
             HANDLE_MSG(hWnd, WM_ACTIVATE, pSprite->OnActivate);
+            HANDLE_MSG(hWnd, WM_TIMER, pSprite->OnTimer);
         }
     }
     return DefWindowProc(hWnd, message, wParam, lParam);
@@ -97,12 +98,30 @@ void Sprite::SetShapeFromBitmap(UINT uIDBitmap)
 const int Sprite::CreateAction(const UINT* frames, int framesLength, int interval, UINT sound)
 {
     LPACTION action = (LPACTION)malloc(sizeof(ACTION) + framesLength * sizeof(UINT));
+    if (action == NULL) {
+        // 判断内存是否申请成功
+        return -1;
+    }
     action->sound = sound;
     action->interval = interval;
     action->length = framesLength;
     memcpy(action->frames, frames, framesLength * sizeof(UINT));
     m_Actions.push_back(action);
     return m_Actions.size() - 1;
+}
+
+void Sprite::PerformAnimation(UINT actionIndex)
+{
+    if (actionIndex >= 0 && actionIndex < m_Actions.size()) {
+        if (m_AnimationStatus.running == FALSE) {
+            LPACTION action = m_Actions.at(actionIndex);
+            m_AnimationStatus.running = TRUE;
+            m_AnimationStatus.actionIndex = actionIndex;
+            m_AnimationStatus.frameIndex = 0;
+            SetTimer(GetHandle(), IDT_ANIMATION, action->interval, NULL);
+        }
+    }
+    
 }
 
 void Sprite::UpdateShape(HDC hdc)
@@ -159,5 +178,24 @@ void Sprite::OnActivate(HWND hWnd, UINT state, HWND hwndActDeact, BOOL fMinimize
     if ((state == WA_ACTIVE || state == WA_CLICKACTIVE) && !fMinimized) {
         // 窗口激活时进行置前操作
         SetWindowPos(hWnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+    }
+}
+
+void Sprite::OnTimer(HWND hWnd, UINT id)
+{
+    if (id == IDT_ANIMATION) {
+        if (m_AnimationStatus.running) {
+            LPACTION pAction = m_Actions.at(m_AnimationStatus.actionIndex);
+            SetShapeFromBitmap(pAction->frames[m_AnimationStatus.frameIndex]);
+            if (m_AnimationStatus.frameIndex + 1 < pAction->length) {
+                m_AnimationStatus.frameIndex = m_AnimationStatus.frameIndex + 1;
+            }
+            else {
+                KillTimer(hWnd, IDT_ANIMATION);
+                m_AnimationStatus.actionIndex = 0;
+                m_AnimationStatus.frameIndex = 0;
+                m_AnimationStatus.running = FALSE;
+            }
+        }
     }
 }
