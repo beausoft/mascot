@@ -13,28 +13,20 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
 
-    Sprite s(hInstance, L"Kaolla", 30, 30, 64, 96);
+    OPTIONS options;
+    options.selection = SELECTION::ActiveWindow;
+    options.SOUND = TRUE;
+    options.ANIMATION = TRUE;
+    Sprite s(hInstance, L"Kaolla", 30, 30, 64, 96, &options);
     s.SetShapeFromBitmap(IDB_USUAL);
     s.Show();
     pS = &s;
 
     UINT blinkFrames[] = { IDB_BLINK_1 ,IDB_BLINK_2 , IDB_USUAL };
-    int blink = s.CreateAction(blinkFrames, 3, 50, IDR_WAVE1);
+    POINT offset = { 0, 10 };
+    int blink = s.CreateAction(blinkFrames, 3, 50, IDR_WAVE1, &offset);
 
     SetTimer(s.GetHandle(), 100002, 500, test);
 
-    Options options;
-    options.selection = ActiveWindow;
-    options.SOUND = TRUE;
-    options.ANIMATION = TRUE;
-    OptionsDlg::ShowDialog(hInstance, s.GetHandle(), &options);
-
-
-    MSG msg;
-    while (GetMessage(&msg, nullptr, 0, 0))
-    {
-        TranslateMessage(&msg);
-        DispatchMessage(&msg);
-    }
-    return (int)msg.wParam;
+    return s.EventLoop();
 }

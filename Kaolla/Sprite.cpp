@@ -1,7 +1,9 @@
 #include "Sprite.h"
+#include <windowsx.h>
 #include "OptionsDlg.h"
+#include "resource.h"
 
-Sprite::Sprite(HINSTANCE hInstance, LPCWSTR spriteName, INT x, INT y, INT nWidth, INT nHeight)
+Sprite::Sprite(HINSTANCE hInstance, LPCWSTR spriteName, INT x, INT y, INT nWidth, INT nHeight, const OPTIONS* options)
 {
     if (hInstance == NULL) {
         m_hInstance = GetModuleHandle(NULL);
@@ -31,6 +33,12 @@ Sprite::Sprite(HINSTANCE hInstance, LPCWSTR spriteName, INT x, INT y, INT nWidth
         return;
     }
     CreateWindow(szWindowClass, spriteName, WS_POPUP | WS_CLIPCHILDREN | WS_CLIPSIBLINGS, x, y, nWidth, nHeight, nullptr, nullptr, m_hInstance, (LPVOID)this);
+    // 初始化菜单
+    m_popupMenu = LoadMenu(m_hInstance, MAKEINTRESOURCE(IDR_MENUPOPUP));
+    // 设置参数
+    if (options != NULL) {
+        memcpy(&m_options, options, sizeof(OPTIONS));
+    }
 }
 
 Sprite::~Sprite()
@@ -61,12 +69,18 @@ LRESULT Sprite::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         switch (message)
         {
             HANDLE_MSG(hWnd, WM_CREATE, pSprite->OnCreate);
+            HANDLE_MSG(hWnd, WM_CLOSE, pSprite->OnClose);
             HANDLE_MSG(hWnd, WM_DESTROY, pSprite->OnDestroy);
             HANDLE_MSG(hWnd, WM_DISPLAYCHANGE, pSprite->OnDisplayChange);
             HANDLE_MSG(hWnd, WM_NCHITTEST, pSprite->OnNCHitTest);
             HANDLE_MSG(hWnd, WM_PAINT, pSprite->OnPaint);
             HANDLE_MSG(hWnd, WM_ACTIVATE, pSprite->OnActivate);
             HANDLE_MSG(hWnd, WM_TIMER, pSprite->OnTimer);
+            HANDLE_MSG(hWnd, WM_RBUTTONUP, pSprite->OnRButtonUp);
+            HANDLE_MSG(hWnd, WM_LBUTTONDOWN, pSprite->OnLButtonDown);
+            HANDLE_MSG(hWnd, WM_LBUTTONUP, pSprite->OnLButtonUp);
+            HANDLE_MSG(hWnd, WM_MOUSEMOVE, pSprite->OnMouseMove);
+            HANDLE_MSG(hWnd, WM_COMMAND, pSprite->OnCommand);
         }
     }
     return DefWindowProc(hWnd, message, wParam, lParam);
@@ -96,13 +110,25 @@ void Sprite::SetShapeFromBitmap(UINT uIDBitmap)
     ReleaseDC(m_hWnd, hdc);
 }
 
-const int Sprite::CreateAction(const UINT* frames, int framesLength, int interval, UINT sound)
+int Sprite::EventLoop()
+{
+    MSG msg;
+    while (GetMessage(&msg, nullptr, 0, 0))
+    {
+        TranslateMessage(&msg);
+        DispatchMessage(&msg);
+    }
+    return (int)msg.wParam;
+}
+
+const int Sprite::CreateAction(const UINT* frames, int framesLength, int interval, UINT sound, const POINT* offset)
 {
     LPACTION action = (LPACTION)malloc(sizeof(ACTION) + framesLength * sizeof(UINT));
     if (action == NULL) {
         // 判断内存是否申请成功
         return -1;
     }
+    memcpy(&action->offset, offset, sizeof(POINT));
     action->sound = sound;
     action->interval = interval;
     action->length = framesLength;
@@ -151,6 +177,11 @@ BOOL Sprite::OnCreate(HWND hWnd, LPCREATESTRUCT lpCreateStruct)
     return TRUE;
 }
 
+void Sprite::OnClose(HWND hwnd)
+{
+    DestroyWindow(hwnd);
+}
+
 void Sprite::OnDestroy(HWND hWnd)
 {
     m_hWnd = NULL;   // 窗口被销毁，清除句柄引用
@@ -164,7 +195,7 @@ void Sprite::OnDisplayChange(HWND hwnd, UINT bitsPerPixel, UINT cxScreen, UINT c
 
 UINT Sprite::OnNCHitTest(HWND hwnd, int x, int y)
 {
-    return HTCAPTION;  // https://blog.csdn.net/jiangqin115/article/details/45057417
+    return HTCLIENT;
 }
 
 void Sprite::OnPaint(HWND hWnd)
@@ -199,5 +230,83 @@ void Sprite::OnTimer(HWND hWnd, UINT id)
                 m_AnimationStatus.running = FALSE;
             }
         }
+    }
+}
+
+void Sprite::OnRButtonUp(HWND hWnd, int x, int y, UINT flags)
+{
+    POINT pt = { 0 };
+    GetCursorPos(&pt);
+    SetForegroundWindow(hWnd);
+
+    HMENU hMenu = GetSubMenu(m_popupMenu, 0);
+    TrackPopupMenu(hMenu, TPM_RIGHTBUTTON, pt.x, pt.y, NULL, hWnd, NULL);
+}
+
+void Sprite::OnLButtonDown(HWND hwnd, BOOL fDoubleClick, int x, int y, UINT keyFlags)
+{
+    if (!fDoubleClick) {
+        SetCapture(hwnd);	//独占鼠标消息
+        m_isMousePrees = TRUE;
+        m_mouseXY.x = x;
+        m_mouseXY.y = y;
+    }
+}
+
+void Sprite::OnLButtonUp(HWND hwnd, int x, int y, UINT keyFlags)
+{
+    if (m_isMousePrees) {
+        m_isMousePrees = FALSE;
+        m_mouseXY.x = 0;
+        m_mouseXY.y = 0;
+        ReleaseCapture();  //释放独占鼠标消息
+    }
+}
+
+void Sprite::OnMouseMove(HWND hwnd, int x, int y, UINT keyFlags)
+{
+    if (m_isMousePrees) {
+        RECT winRect = { 0 };
+        GetWindowRect(hwnd, &winRect);	//获取窗口大小
+        int cx = winRect.left + (x - m_mouseXY.x);
+        int cy = winRect.top + (y - m_mouseXY.y);
+        MoveWindow(hwnd, cx, cy, winRect.right - winRect.left, winRect.bottom - winRect.top, TRUE);	//移动窗口
+    }
+}
+
+INT_PTR CALLBACK AboutDialogProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam) {
+    UNREFERENCED_PARAMETER(lParam);
+    switch (message)
+    {
+    case WM_INITDIALOG:
+        return (INT_PTR)TRUE;
+
+    case WM_COMMAND:
+        if (LOWORD(wParam) == IDOK || LOWORD(wParam) == IDCANCEL)
+        {
+            EndDialog(hDlg, LOWORD(wParam));
+            return (INT_PTR)TRUE;
+        }
+        break;
+    }
+    return (INT_PTR)FALSE;
+}
+
+void Sprite::OnCommand(HWND hwnd, int id, HWND hwndCtl, UINT codeNotify)
+{
+    switch (id) {
+    case ID_POPUP_SETTINGS:
+        Hidden();
+        OptionsDlg::ShowDialog(m_hInstance, hwnd, &m_options);
+        Show();
+        break;
+    case ID_POPUP_ABOUT:
+        DialogBox(m_hInstance, MAKEINTRESOURCE(IDD_ABOUT), hwnd, AboutDialogProc);
+        break;
+    case ID_POPUP_QUIT:
+        break;
+    case ID_POPUP_EXIT:
+        DestroyWindow(hwnd);
+        break;
     }
 }

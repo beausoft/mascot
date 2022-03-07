@@ -79,7 +79,7 @@ IDR_WAVE5               WAVE                    "sounds\\00005.wav"
 //
 
 IDD_OPTIONSBOX DIALOGEX 0, 0, 195, 131
-STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Options"
 FONT 9, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
@@ -99,6 +99,19 @@ BEGIN
     CONTROL         "Animation",IDC_CANIMATION,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,100,92,92,10
 END
 
+IDD_ABOUT DIALOGEX 0, 0, 170, 91
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "关于"
+FONT 9, "Microsoft Sans Serif", 400, 0, 0x0
+BEGIN
+    DEFPUSHBUTTON   "确定",IDOK,111,69,50,14
+    LTEXT           "桌面精灵重制版",IDC_STATIC,6,5,48,8
+    LTEXT           "原作品版权",IDC_STATIC,6,29,34,8
+    LTEXT           "KODANSHA/LOVEHINA ONSEN-KUMIAI/TV TOKYO",IDC_STATIC,6,53,157,8
+    LTEXT           "KEN AKAMATSU",IDC_STATIC,6,41,53,8
+    LTEXT           "重置的目的只是个人喜好，不可用于商业用途",IDC_STATIC,6,17,134,8
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -113,6 +126,10 @@ BEGIN
         LEFTMARGIN, 7
         TOPMARGIN, 7
     END
+
+    IDD_ABOUT, DIALOG
+    BEGIN
+    END
 END
 #endif    // APSTUDIO_INVOKED
 
@@ -125,6 +142,29 @@ END
 IDD_OPTIONSBOX AFX_DIALOG_LAYOUT
 BEGIN
     0
+END
+
+IDD_ABOUT AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MENUPOPUP MENU
+BEGIN
+    POPUP "Popup"
+    BEGIN
+        MENUITEM "设置(&S)",                      ID_POPUP_SETTINGS
+        MENUITEM "关于(&A)",                      ID_POPUP_ABOUT
+        MENUITEM SEPARATOR
+        MENUITEM "全部关闭(&Q)",                    ID_POPUP_QUIT
+        MENUITEM "关闭(&X)",                      ID_POPUP_EXIT
+    END
 END
 
 #endif    // 中文(简体，中国) resources

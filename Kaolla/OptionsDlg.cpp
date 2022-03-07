@@ -3,7 +3,7 @@
 #include <windowsx.h>
 #include <Commctrl.h>
 
-BOOL OptionsDlg::ShowDialog(HINSTANCE hInstance, HWND hWndParent, Options* options)
+BOOL OptionsDlg::ShowDialog(HINSTANCE hInstance, HWND hWndParent, OPTIONS* options)
 {
 	INT_PTR ret = DialogBoxParam(hInstance, MAKEINTRESOURCE(IDD_OPTIONSBOX), hWndParent, DialogProc, (LPARAM)options);
 	return ret != -1;
@@ -21,7 +21,7 @@ INT_PTR OptionsDlg::DialogProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lP
 
 BOOL OptionsDlg::OnInitDialog(HWND hwnd, HWND hwndFocus, LPARAM lParam)
 {
-	Options* pOptions = (Options*)lParam;
+	OPTIONS* pOptions = (OPTIONS*)lParam;
 	HWND hWndWidget = NULL;
 
 	// https://docs.microsoft.com/en-us/windows/win32/controls/tbm-getpos
@@ -34,13 +34,13 @@ BOOL OptionsDlg::OnInitDialog(HWND hwnd, HWND hwndFocus, LPARAM lParam)
 
 	int selectedRadio;
 	switch (pOptions->selection) {
-	case Either:
+	case SELECTION::Either:
 		selectedRadio = IDC_REITHER;
 		break;
-	case StartMenu:
+	case SELECTION::StartMenu:
 		selectedRadio = IDC_RSTARTMENU;
 		break;
-	case ActiveWindow:
+	case SELECTION::ActiveWindow:
 		selectedRadio = IDC_RACTIVEWINDOW;
 		break;
 	default:
@@ -62,17 +62,17 @@ void OptionsDlg::OnCommand(HWND hwnd, int id, HWND hwndCtl, UINT codeNotify)
 	switch (id) {
 	case IDOK:
 	{
-		Options* pOptions = (Options*)GetWindowLongPtr(hwnd, GWLP_USERDATA);
+		OPTIONS* pOptions = (OPTIONS*)GetWindowLongPtr(hwnd, GWLP_USERDATA);
 		pOptions->WINPOS = SendMessage(GetDlgItem(hwnd, IDC_SWINPOS), TBM_GETPOS, 0, 0);
 		
 		if (IsDlgButtonChecked(hwnd, IDC_REITHER)) {
-			pOptions->selection = Either;
+			pOptions->selection = SELECTION::Either;
 		}
 		else if (IsDlgButtonChecked(hwnd, IDC_RSTARTMENU)) {
-			pOptions->selection = StartMenu;
+			pOptions->selection = SELECTION::StartMenu;
 		}
 		else if (IsDlgButtonChecked(hwnd, IDC_RACTIVEWINDOW)) {
-			pOptions->selection = ActiveWindow;
+			pOptions->selection = SELECTION::ActiveWindow;
 		}
 
 		pOptions->SOUND = IsDlgButtonChecked(hwnd, IDC_CSOUND);
