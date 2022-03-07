@@ -141,11 +141,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Animation.cpp" />
     <ClCompile Include="Kaolla.cpp" />
     <ClCompile Include="OptionsDlg.cpp" />
     <ClCompile Include="Sprite.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Animation.h" />
     <ClInclude Include="OptionsDlg.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Sprite.h" />

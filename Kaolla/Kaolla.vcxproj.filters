@@ -24,6 +24,9 @@
     <ClCompile Include="OptionsDlg.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Animation.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -33,6 +36,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="OptionsDlg.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Animation.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,28 +1,14 @@
 #pragma once
 #include<Windows.h>
-#include <vector>
 #include "OptionsDlg.h"
-
-typedef struct tagACTION {
-	POINT offset;
-	UINT sound;
-	int interval;
-	int length;
-	UINT frames[1];
-}ACTION, * LPACTION;
-
-struct AnimationStatus {
-	BOOL running;
-	int actionIndex;
-	int frameIndex;
-};
+#include "Animation.h"
 
 constexpr auto IDT_ANIMATION = 10005;
 
 class Sprite
 {
 public:
-	Sprite(HINSTANCE hInstance, LPCWSTR spriteName, INT x, INT y, INT nWidth, INT nHeight, const OPTIONS* options);
+	Sprite(HINSTANCE hInstance, LPCWSTR spriteName, INT nWidth, INT nHeight, const OPTIONS* options);
 	~Sprite();
 private:
 	static LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam); // 原始窗口过程
@@ -30,12 +16,13 @@ public:
 	HWND GetHandle();  // 返回窗口对象句柄
 	void Show();       // 显示窗口
 	void Hidden();     // 隐藏窗口
-	void SetShapeFromBitmap(UINT uIDBitmap);    // 根据位图设置形状
+	void SetFrame(FRAME pFrame);
 	int EventLoop();
-	const int CreateAction(const UINT* frames, int framesLength, int interval, UINT sound, const POINT* offset);
-	void PerformAnimation(UINT actionIndex);
+	void PlayAnimation(const ACTION* pAction);
+	void StopAnimation();
 private:
 	void UpdateShape(HDC hdc);
+	void UpdatePosition();
 private:
 	BOOL OnCreate(HWND hwnd, LPCREATESTRUCT lpCreateStruct);
 	void OnClose(HWND hwnd);
@@ -57,7 +44,6 @@ private:
 	POINT m_mouseXY = { 0 };
 	HMENU m_popupMenu = NULL;
 	OPTIONS m_options;
-	UINT m_uIDBitmap = NULL;
-	std::vector<LPACTION> m_Actions;
-	AnimationStatus m_AnimationStatus = { FALSE, 0, 0 };
+	FRAME m_frame = { 0 };
+	AnimationStatus m_AnimationStatus = { FALSE, NULL, 0 };
 };

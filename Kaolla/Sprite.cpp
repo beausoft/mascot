@@ -3,8 +3,9 @@
 #include "OptionsDlg.h"
 #include "resource.h"
 
-Sprite::Sprite(HINSTANCE hInstance, LPCWSTR spriteName, INT x, INT y, INT nWidth, INT nHeight, const OPTIONS* options)
+Sprite::Sprite(HINSTANCE hInstance, LPCWSTR spriteName, INT nWidth, INT nHeight, const OPTIONS* options)
 {
+    INT x = 0, y = 0;
     if (hInstance == NULL) {
         m_hInstance = GetModuleHandle(NULL);
     }
@@ -45,11 +46,6 @@ Sprite::~Sprite()
 {
     if (m_hWnd != NULL) {
         DestroyWindow(m_hWnd);
-    }
-    while (!m_Actions.empty()) {
-        LPACTION pAction = m_Actions.back();
-        m_Actions.pop_back();
-        free(pAction);
     }
 }
 
@@ -95,6 +91,7 @@ void Sprite::Show()
 {
     ShowWindow(m_hWnd, SW_SHOW);
     UpdateWindow(m_hWnd);
+    UpdatePosition();
 }
 
 void Sprite::Hidden()
@@ -102,9 +99,9 @@ void Sprite::Hidden()
     ShowWindow(m_hWnd, SW_HIDE);
 }
 
-void Sprite::SetShapeFromBitmap(UINT uIDBitmap)
+void Sprite::SetFrame(FRAME frame)
 {
-    m_uIDBitmap = uIDBitmap;
+    m_frame = frame;
     HDC hdc = GetDC(m_hWnd);
     UpdateShape(hdc);
     ReleaseDC(m_hWnd, hdc);
@@ -121,41 +118,34 @@ int Sprite::EventLoop()
     return (int)msg.wParam;
 }
 
-const int Sprite::CreateAction(const UINT* frames, int framesLength, int interval, UINT sound, const POINT* offset)
+void Sprite::PlayAnimation(const ACTION* pAction)
 {
-    LPACTION action = (LPACTION)malloc(sizeof(ACTION) + framesLength * sizeof(UINT));
-    if (action == NULL) {
-        // 判断内存是否申请成功
-        return -1;
+    StopAnimation();
+    if (m_options.SOUND) {
+        PlaySound(MAKEINTRESOURCE(pAction->sound), m_hInstance, SND_ASYNC | SND_RESOURCE | SND_NODEFAULT | SND_NOWAIT);
     }
-    memcpy(&action->offset, offset, sizeof(POINT));
-    action->sound = sound;
-    action->interval = interval;
-    action->length = framesLength;
-    memcpy(action->frames, frames, framesLength * sizeof(UINT));
-    m_Actions.push_back(action);
-    return m_Actions.size() - 1;
+    m_AnimationStatus.running = TRUE;
+    m_AnimationStatus.action = pAction;
+    m_AnimationStatus.frameIndex = 0;
+    SetTimer(m_hWnd, IDT_ANIMATION, pAction->interval, NULL);
 }
 
-void Sprite::PerformAnimation(UINT actionIndex)
+void Sprite::StopAnimation()
 {
-    if (actionIndex >= 0 && actionIndex < m_Actions.size()) {
-        if (m_AnimationStatus.running == FALSE) {
-            LPACTION action = m_Actions.at(actionIndex);
-            PlaySound(MAKEINTRESOURCE(action->sound), m_hInstance, SND_ASYNC | SND_RESOURCE | SND_NODEFAULT | SND_NOWAIT);
-            m_AnimationStatus.running = TRUE;
-            m_AnimationStatus.actionIndex = actionIndex;
-            m_AnimationStatus.frameIndex = 0;
-            SetTimer(GetHandle(), IDT_ANIMATION, action->interval, NULL);
-        }
+    if (m_AnimationStatus.running) {
+        KillTimer(m_hWnd, IDT_ANIMATION);
+        SetFrame(m_AnimationStatus.action->frames[m_AnimationStatus.action->length - 1]);  // 停止动画时，将直接展示最后一帧
+        /*清理动画状态*/
+        m_AnimationStatus.running = FALSE;
+        m_AnimationStatus.action = NULL;
+        m_AnimationStatus.frameIndex = 0;
     }
-
 }
 
 void Sprite::UpdateShape(HDC hdc)
 {
-    if (!m_uIDBitmap) return;
-    HBITMAP hBitmap = LoadBitmap(m_hInstance, MAKEINTRESOURCE(m_uIDBitmap));
+    if (!m_frame.idBitmap) return;
+    HBITMAP hBitmap = LoadBitmap(m_hInstance, MAKEINTRESOURCE(m_frame.idBitmap));
     BITMAP bm = { 0 };
     GetObject(hBitmap, sizeof(bm), &bm);
     //BITMAPINFOHEADER bmih = { sizeof(BITMAPINFOHEADER), bm.bmWidth, bm.bmHeight, 1, 32, BI_RGB, 0, 0, 0, 0, 0 };
@@ -167,6 +157,22 @@ void Sprite::UpdateShape(HDC hdc)
 
     DeleteDC(memDC);
     DeleteObject(hBitmap);
+}
+
+void Sprite::UpdatePosition()
+{
+    if (m_options.selection == SELECTION::StartMenu) {
+        RECT wndRect;
+        GetWindowRect(m_hWnd, &wndRect);
+        int screenWidth = GetSystemMetrics(SM_CXFULLSCREEN);
+        int screenHeight = GetSystemMetrics(SM_CYFULLSCREEN);
+        int wndWidth = wndRect.right - wndRect.left;
+        int wndHeight = wndRect.bottom - wndRect.top;
+
+        //int x = int((screenWidth - wndWidth) * (m_options.WINPOS / 100.f)) + m_offsetX;
+        //int y = screenHeight - wndHeight + m_offsetY;
+        //MoveWindow(m_hWnd, x, y, wndWidth, wndHeight, TRUE);
+    }
 }
 
 BOOL Sprite::OnCreate(HWND hWnd, LPCREATESTRUCT lpCreateStruct)
@@ -218,16 +224,20 @@ void Sprite::OnTimer(HWND hWnd, UINT id)
 {
     if (id == IDT_ANIMATION) {
         if (m_AnimationStatus.running) {
-            LPACTION pAction = m_Actions.at(m_AnimationStatus.actionIndex);
-            SetShapeFromBitmap(pAction->frames[m_AnimationStatus.frameIndex]);
-            if (m_AnimationStatus.frameIndex + 1 < pAction->length) {
-                m_AnimationStatus.frameIndex = m_AnimationStatus.frameIndex + 1;
-            }
-            else {
-                KillTimer(hWnd, IDT_ANIMATION);
-                m_AnimationStatus.actionIndex = 0;
-                m_AnimationStatus.frameIndex = 0;
-                m_AnimationStatus.running = FALSE;
+            const ACTION *pAction = m_AnimationStatus.action;
+            if (pAction->length > 0) {
+                SetFrame(pAction->frames[m_AnimationStatus.frameIndex]);
+                if (m_AnimationStatus.frameIndex + 1 < pAction->length - 1) {
+                    m_AnimationStatus.frameIndex = m_AnimationStatus.frameIndex + 1;
+                }
+                else {
+                    if (pAction->loop) {
+                        m_AnimationStatus.frameIndex = 0;
+                    }
+                    else {
+                        StopAnimation();
+                    }
+                }
             }
         }
     }
@@ -260,6 +270,12 @@ void Sprite::OnLButtonUp(HWND hwnd, int x, int y, UINT keyFlags)
         m_mouseXY.x = 0;
         m_mouseXY.y = 0;
         ReleaseCapture();  //释放独占鼠标消息
+
+        // 更新位置
+        RECT wndRect;
+        GetWindowRect(hwnd, &wndRect);
+        m_options.WINPOS = int(wndRect.left / float(GetSystemMetrics(SM_CXFULLSCREEN) - (wndRect.right - wndRect.left)) * 100);
+        UpdatePosition();
     }
 }
 
