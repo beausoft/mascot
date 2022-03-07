@@ -3,6 +3,7 @@
 #include "OptionsDlg.h"
 #include "resource.h"
 #include <cmath>
+#include "hook.h"
 
 Sprite::Sprite(HINSTANCE hInstance, LPCWSTR spriteName, INT nWidth, INT nHeight, const OPTIONS* options)
 {
@@ -132,6 +133,7 @@ void Sprite::PlayAnimation(const ACTION* pAction)
     m_AnimationStatus.action = pAction;
     m_AnimationStatus.frameIndex = 0;
     SetTimer(m_hWnd, IDT_ANIMATION, pAction->interval, NULL);
+    AnimationBeginHook();
 }
 
 void Sprite::StopAnimation()
@@ -143,6 +145,7 @@ void Sprite::StopAnimation()
         m_AnimationStatus.running = FALSE;
         m_AnimationStatus.action = NULL;
         m_AnimationStatus.frameIndex = 0;
+        AnimationEndHook();
     }
 }
 
@@ -265,6 +268,8 @@ void Sprite::OnLButtonDown(HWND hwnd, BOOL fDoubleClick, int x, int y, UINT keyF
         m_isMousePrees = TRUE;
         m_mouseXY.x = x;
         m_mouseXY.y = y;
+
+        MouseLeftButtonHook();
     }
 }
 

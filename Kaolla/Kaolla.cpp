@@ -1,6 +1,7 @@
 #include "Sprite.h"
 #include "resource.h"
 #include "OptionsDlg.h"
+#include "hook.h"
 
 constexpr auto IDT_TRIGGER_ANIMATION = 10001;
 
@@ -16,8 +17,16 @@ const ACTION* CLICK_ACTION = NULL;
 const ACTION* OTHER_ACTION = NULL;
 
 VOID CALLBACK ActionTimer(HWND hWnd , UINT uMsg, UINT_PTR idEvent, DWORD dwTime) {
-    sprite->PlayAnimation(OTHER_ACTION);
+    sprite->PlayAnimation(LAUGH_ACTION_B);
 }
+
+void MouseLeftButtonHook() {
+    sprite->PlayAnimation(CLICK_ACTION);
+}
+
+void AnimationBeginHook() {}
+
+void AnimationEndHook() {}
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR lpCmdLine, _In_ int nCmdShow) {
     UNREFERENCED_PARAMETER(hPrevInstance);
