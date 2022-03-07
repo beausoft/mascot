@@ -2,6 +2,7 @@
 #include <windowsx.h>
 #include "OptionsDlg.h"
 #include "resource.h"
+#include <cmath>
 
 Sprite::Sprite(HINSTANCE hInstance, LPCWSTR spriteName, INT nWidth, INT nHeight, const OPTIONS* options)
 {
@@ -169,9 +170,9 @@ void Sprite::UpdatePosition()
         int wndWidth = wndRect.right - wndRect.left;
         int wndHeight = wndRect.bottom - wndRect.top;
 
-        //int x = int((screenWidth - wndWidth) * (m_options.WINPOS / 100.f)) + m_offsetX;
-        //int y = screenHeight - wndHeight + m_offsetY;
-        //MoveWindow(m_hWnd, x, y, wndWidth, wndHeight, TRUE);
+        int x = int((screenWidth - wndWidth) * (m_options.WINPOS / 100.f)) + m_frame.offsetX;
+        int y = screenHeight - wndHeight + m_frame.offsetY;
+        MoveWindow(m_hWnd, x, y, wndWidth, wndHeight, TRUE);
     }
 }
 
@@ -274,7 +275,10 @@ void Sprite::OnLButtonUp(HWND hwnd, int x, int y, UINT keyFlags)
         // ¸üÐÂÎ»ÖÃ
         RECT wndRect;
         GetWindowRect(hwnd, &wndRect);
-        m_options.WINPOS = int(wndRect.left / float(GetSystemMetrics(SM_CXFULLSCREEN) - (wndRect.right - wndRect.left)) * 100);
+        int pos = int(wndRect.left / float(GetSystemMetrics(SM_CXFULLSCREEN) - (wndRect.right - wndRect.left)) * 100);
+        if (std::abs(pos - int(m_options.WINPOS)) > 2) {
+            m_options.WINPOS = int(wndRect.left / float(GetSystemMetrics(SM_CXFULLSCREEN) - (wndRect.right - wndRect.left)) * 100);
+        }
         UpdatePosition();
     }
 }
