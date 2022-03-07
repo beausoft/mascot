@@ -56,6 +56,32 @@ IDB_BLINK_1             BITMAP                  "images\\blink\\136.bmp"
 
 IDB_BLINK_2             BITMAP                  "images\\blink\\137.bmp"
 
+IDB_LAUGH_1             BITMAP                  "images\\laugh\\445.bmp"
+
+IDB_LAUGH_2             BITMAP                  "images\\laugh\\446.bmp"
+
+IDB_LAUGH_3             BITMAP                  "images\\laugh\\447.bmp"
+
+IDB_LAUGH_4             BITMAP                  "images\\laugh\\448.bmp"
+
+IDB_LAUGH_5             BITMAP                  "images\\laugh\\449.bmp"
+
+IDB_LAUGH_6             BITMAP                  "images\\laugh\\450.bmp"
+
+IDB_HYPSOKINESIS_1      BITMAP                  "images\\hypsokinesis\\792.bmp"
+
+IDB_HYPSOKINESIS_2      BITMAP                  "images\\hypsokinesis\\793.bmp"
+
+IDB_HYPSOKINESIS_3      BITMAP                  "images\\hypsokinesis\\794.bmp"
+
+IDB_HYPSOKINESIS_4      BITMAP                  "images\\hypsokinesis\\795.bmp"
+
+IDB_HYPSOKINESIS_5      BITMAP                  "images\\hypsokinesis\\796.bmp"
+
+IDB_HYPSOKINESIS_6      BITMAP                  "images\\hypsokinesis\\798.bmp"
+
+IDB_HYPSOKINESIS_7      BITMAP                  "images\\hypsokinesis\\799.bmp"
+
 
 /////////////////////////////////////////////////////////////////////////////
 //

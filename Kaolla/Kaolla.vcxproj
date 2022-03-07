@@ -159,6 +159,20 @@
     <Image Include="images\blink\136.bmp" />
     <Image Include="images\blink\137.bmp" />
     <Image Include="images\blink\138.bmp" />
+    <Image Include="images\hypsokinesis\792.bmp" />
+    <Image Include="images\hypsokinesis\793.bmp" />
+    <Image Include="images\hypsokinesis\794.bmp" />
+    <Image Include="images\hypsokinesis\795.bmp" />
+    <Image Include="images\hypsokinesis\796.bmp" />
+    <Image Include="images\hypsokinesis\797.bmp" />
+    <Image Include="images\hypsokinesis\798.bmp" />
+    <Image Include="images\hypsokinesis\799.bmp" />
+    <Image Include="images\laugh\445.bmp" />
+    <Image Include="images\laugh\446.bmp" />
+    <Image Include="images\laugh\447.bmp" />
+    <Image Include="images\laugh\448.bmp" />
+    <Image Include="images\laugh\449.bmp" />
+    <Image Include="images\laugh\450.bmp" />
     <Image Include="images\usual.bmp" />
   </ItemGroup>
   <ItemGroup>

@@ -60,6 +60,48 @@
     <Image Include="images\blink\138.bmp">
       <Filter>资源文件</Filter>
     </Image>
+    <Image Include="images\laugh\445.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\laugh\446.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\laugh\447.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\laugh\448.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\laugh\449.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\laugh\450.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\hypsokinesis\792.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\hypsokinesis\793.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\hypsokinesis\794.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\hypsokinesis\795.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\hypsokinesis\796.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\hypsokinesis\797.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\hypsokinesis\798.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\hypsokinesis\799.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Manifest Include="app.manifest">

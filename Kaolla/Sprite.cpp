@@ -121,8 +121,11 @@ int Sprite::EventLoop()
 
 void Sprite::PlayAnimation(const ACTION* pAction)
 {
+    if (!m_options.ANIMATION) {
+        return;
+    }
     StopAnimation();
-    if (m_options.SOUND) {
+    if (pAction->sound != NULL && m_options.SOUND) {
         PlaySound(MAKEINTRESOURCE(pAction->sound), m_hInstance, SND_ASYNC | SND_RESOURCE | SND_NODEFAULT | SND_NOWAIT);
     }
     m_AnimationStatus.running = TRUE;
@@ -197,7 +200,8 @@ void Sprite::OnDestroy(HWND hWnd)
 
 void Sprite::OnDisplayChange(HWND hwnd, UINT bitsPerPixel, UINT cxScreen, UINT cyScreen)
 {
-    // TODO 监听分辨率改变事件
+    // 监听分辨率改变事件
+    UpdatePosition();
 }
 
 UINT Sprite::OnNCHitTest(HWND hwnd, int x, int y)
