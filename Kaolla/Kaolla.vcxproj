@@ -159,6 +159,7 @@
     <ResourceCompile Include="Resource.rc" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="128.ico" />
     <Image Include="images\blink\136.bmp" />
     <Image Include="images\blink\137.bmp" />
     <Image Include="images\blink\138.bmp" />

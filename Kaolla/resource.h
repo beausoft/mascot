@@ -25,9 +25,10 @@
 #define IDB_HYPSOKINESIS_3              125
 #define IDB_HYPSOKINESIS_4              126
 #define IDB_HYPSOKINESIS_5              127
-#define IDB_HYPSOKINESIS_7              129
 #define IDB_HYPSOKINESIS_6              128
+#define IDB_HYPSOKINESIS_7              129
 #define IDB_HYPSOKINESIS_8              130
+#define IDI_ICON_MAIN                   131
 #define IDC_SLIDER3                     1005
 #define IDC_SLIDER_WINPOS               1005
 #define IDC_SWINPOS                     1005
@@ -51,7 +52,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        131
+#define _APS_NEXT_RESOURCE_VALUE        132
 #define _APS_NEXT_COMMAND_VALUE         40010
 #define _APS_NEXT_CONTROL_VALUE         1012
 #define _APS_NEXT_SYMED_VALUE           101

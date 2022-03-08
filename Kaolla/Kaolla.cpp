@@ -99,7 +99,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
     exitState->setEnter([]() { KillTimer(sprite->GetHandle(), IDT_TRIGGER_ANIMATION); });
     // 随机设置触发时间
     State<StateEvent>* randomTimerState = new State<StateEvent>;
-    randomTimerState->setExec([]() { SetTimer(sprite->GetHandle(), IDT_TRIGGER_ANIMATION, RandomRange(5000, 10000), ActionTimer); });
+    randomTimerState->setExec([]() { SetTimer(sprite->GetHandle(), IDT_TRIGGER_ANIMATION, RandomRange(5000, 15000), ActionTimer); });
     // 随机触发动画
     State<StateEvent>* randomTriggerState = new State<StateEvent>;
     randomTriggerState->setEnter([]() { KillTimer(sprite->GetHandle(), IDT_TRIGGER_ANIMATION); });

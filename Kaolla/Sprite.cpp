@@ -160,12 +160,12 @@ int Sprite::EventLoop()
 
 void Sprite::PlayAnimation(const ACTION* pAction)
 {
-    if (!m_options.ANIMATION) {
-        return;
-    }
     StopAnimation();
     if (pAction->sound != NULL && m_options.SOUND) {
         PlaySound(MAKEINTRESOURCE(pAction->sound), m_hInstance, SND_ASYNC | SND_RESOURCE | SND_NODEFAULT | SND_NOWAIT);
+    }
+    if (!m_options.ANIMATION) {
+        return;
     }
     m_AnimationStatus.running = TRUE;
     m_AnimationStatus.action = pAction;

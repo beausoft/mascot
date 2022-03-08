@@ -111,6 +111,9 @@
     <Image Include="images\hypsokinesis\799.bmp">
       <Filter>资源文件</Filter>
     </Image>
+    <Image Include="128.ico">
+      <Filter>资源文件</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Manifest Include="app.manifest">
