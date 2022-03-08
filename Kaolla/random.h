@@ -2,7 +2,7 @@
 #include <cstdlib>
 
 float GetProb() {
-    return (std::rand() % 100) / 100.f;
+    return (std::rand() % 100 + 1) / 100.f;
 }
 
 int RandomRange(int start, int end) {

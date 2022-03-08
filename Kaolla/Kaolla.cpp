@@ -99,19 +99,19 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
     exitState->setEnter([]() { KillTimer(sprite->GetHandle(), IDT_TRIGGER_ANIMATION); });
     // 随机设置触发时间
     State<StateEvent>* randomTimerState = new State<StateEvent>;
-    randomTimerState->setExec([]() { SetTimer(sprite->GetHandle(), IDT_TRIGGER_ANIMATION, RandomRange(5000, 30000), ActionTimer); });
+    randomTimerState->setExec([]() { SetTimer(sprite->GetHandle(), IDT_TRIGGER_ANIMATION, RandomRange(5000, 10000), ActionTimer); });
     // 随机触发动画
     State<StateEvent>* randomTriggerState = new State<StateEvent>;
     randomTriggerState->setEnter([]() { KillTimer(sprite->GetHandle(), IDT_TRIGGER_ANIMATION); });
     randomTriggerState->setExec([]() {
         float prob = GetProb();
-        if (prob <= 0.1) {
-            sprite->PlayAnimation(OTHER_ACTION);
-        } else if (prob <= 0.3) {
+        if (prob <= 0.15) {
             sprite->PlayAnimation(LAUGH_ACTION_A);
-        } else if (prob <= 0.4) {
+        } else if (prob <= 0.25) {
             sprite->PlayAnimation(LAUGH_ACTION_B);
-        } else if (prob <= 0.5) {
+        } else if (prob <= 0.35) {
+            sprite->PlayAnimation(OTHER_ACTION);
+        } else if (prob <= 0.45) {
             stateMachine->doAction(StateEvent::PLAY_HYPSOKINESIS);
             return;
         } else {
