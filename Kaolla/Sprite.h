@@ -4,6 +4,7 @@
 #include "Animation.h"
 
 constexpr auto IDT_ANIMATION = 10005;
+constexpr auto IDT_WINDOW_DETECTION = 10006;
 
 class Sprite
 {
@@ -23,6 +24,7 @@ public:
 private:
 	void UpdateShape(HDC hdc);
 	void UpdatePosition();
+	void Set_hWndForeground(HWND hWndForeground);
 private:
 	BOOL OnCreate(HWND hwnd, LPCREATESTRUCT lpCreateStruct);
 	void OnClose(HWND hwnd);
@@ -46,4 +48,6 @@ private:
 	OPTIONS m_options;
 	FRAME m_frame = { 0 };
 	AnimationStatus m_AnimationStatus = { FALSE, NULL, 0 };
+	HWND m_hWndForeground = NULL;
+	RECT m_ForegroundWndRect = { 0 };
 };

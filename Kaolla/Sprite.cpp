@@ -4,6 +4,40 @@
 #include "resource.h"
 #include <cmath>
 #include "hook.h"
+#include <Psapi.h>
+#include <string>
+#include <algorithm>
+
+BOOL isExplorer(_In_ HWND hWnd) {
+    DWORD dwPid;
+    if (GetWindowThreadProcessId(hWnd, &dwPid)) {
+        HANDLE hProcess = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE, dwPid);
+        if (NULL != hProcess) {
+            WCHAR fileFullName[256];
+            if (GetProcessImageFileName(hProcess, fileFullName, 256)) {
+                std::wstring fileFullNameString(fileFullName);
+                std::wstring::size_type spInd = fileFullNameString.find_last_of('\\', fileFullNameString.length());
+                if (std::wstring::npos != spInd) {
+                    std::wstring fileNameString = fileFullNameString.substr(spInd + 1, fileFullNameString.length());
+                    std::transform(fileNameString.begin(), fileNameString.end(), fileNameString.begin(), ::tolower);
+                    if (fileNameString == L"explorer.exe") {
+                        return TRUE;
+                    }
+                }
+            }
+        }
+    }
+    return FALSE;
+}
+
+BOOL isSelf(_In_ HWND hWnd) {
+    DWORD dwPid;
+    if (GetWindowThreadProcessId(hWnd, &dwPid)) {
+        DWORD dwMyPid = GetCurrentProcessId();
+        return dwPid == dwMyPid;
+    }
+    return FALSE;
+}
 
 Sprite::Sprite(HINSTANCE hInstance, LPCWSTR spriteName, INT nWidth, INT nHeight, const OPTIONS* options)
 {
@@ -103,10 +137,14 @@ void Sprite::Hidden()
 
 void Sprite::SetFrame(FRAME frame)
 {
+    bool updatePos = m_frame.offsetX != frame.offsetX || m_frame.offsetY != frame.offsetY;
     m_frame = frame;
     HDC hdc = GetDC(m_hWnd);
     UpdateShape(hdc);
     ReleaseDC(m_hWnd, hdc);
+    if (updatePos) {
+        UpdatePosition();
+    }
 }
 
 int Sprite::EventLoop()
@@ -166,17 +204,68 @@ void Sprite::UpdateShape(HDC hdc)
 
 void Sprite::UpdatePosition()
 {
-    if (m_options.selection == SELECTION::StartMenu) {
-        RECT wndRect;
-        GetWindowRect(m_hWnd, &wndRect);
-        int screenWidth = GetSystemMetrics(SM_CXFULLSCREEN);
-        int screenHeight = GetSystemMetrics(SM_CYFULLSCREEN);
-        int wndWidth = wndRect.right - wndRect.left;
-        int wndHeight = wndRect.bottom - wndRect.top;
+    RECT wndRect;
+    GetWindowRect(m_hWnd, &wndRect);
+    int wndWidth = wndRect.right - wndRect.left;
+    int wndHeight = wndRect.bottom - wndRect.top;
 
-        int x = int((screenWidth - wndWidth) * (m_options.WINPOS / 100.f)) + m_frame.offsetX;
-        int y = screenHeight - wndHeight + m_frame.offsetY;
+    RECT targetWndRect = m_ForegroundWndRect;
+    if (m_options.selection == SELECTION::StartMenu || (m_options.selection == SELECTION::Either && (m_hWndForeground == NULL || targetWndRect.top - wndHeight < 0))) {
+        int screenX = GetSystemMetrics(SM_CXSCREEN);
+        int screenY = GetSystemMetrics(SM_CYSCREEN);
+        RECT rt;
+        SystemParametersInfo(SPI_GETWORKAREA, 0, &rt, 0);
+        // 如果工作区高度等于屏幕高度说明没有任务栏或者任务栏在侧面
+        if (rt.bottom != screenY && rt.left == 0 && rt.top == 0) {
+            targetWndRect.top = rt.bottom;
+            targetWndRect.left = 0;
+            targetWndRect.right = GetSystemMetrics(SM_CXSCREEN);
+            targetWndRect.bottom = GetSystemMetrics(SM_CYSCREEN);
+        }
+    }
+    else if (m_options.selection == SELECTION::ActiveWindow && (targetWndRect.top - wndHeight < 0 || m_hWndForeground == NULL)) {
+        targetWndRect = { 0 };
+    }
+
+    if (targetWndRect.top <= 0) {
+        // 移出屏幕外
+        MoveWindow(m_hWnd, -wndWidth, -wndHeight, wndWidth, wndHeight, TRUE);
+    } else {
+        int targetWndWidth = targetWndRect.right - targetWndRect.left;
+        int targetWndHeight = targetWndRect.bottom - targetWndRect.top;
+        int x = int(targetWndWidth * (m_options.WINPOS / 100.f) + targetWndRect.left + m_frame.offsetX);
+        int y = targetWndRect.top - wndHeight + m_frame.offsetY;
         MoveWindow(m_hWnd, x, y, wndWidth, wndHeight, TRUE);
+    }
+}
+
+void Sprite::Set_hWndForeground(HWND hWndForeground)
+{
+    bool change = false;
+
+    if (m_hWndForeground != hWndForeground) {
+        change = true;
+    }
+    m_hWndForeground = hWndForeground;
+    
+    if (hWndForeground != NULL) {
+        RECT foregroundWndRect = { 0 };
+        GetWindowRect(hWndForeground, &foregroundWndRect);
+        if (foregroundWndRect.top != m_ForegroundWndRect.top
+            || foregroundWndRect.left != m_ForegroundWndRect.left
+            || foregroundWndRect.right != m_ForegroundWndRect.right
+            || foregroundWndRect.bottom != m_ForegroundWndRect.bottom) {
+            // 只有当前台窗口位置改变时才进行位置更新
+            m_ForegroundWndRect = foregroundWndRect;
+            change = true;
+        }
+    }
+    else {
+        m_ForegroundWndRect = { 0 };
+    }
+
+    if (change) {
+        UpdatePosition();
     }
 }
 
@@ -185,6 +274,7 @@ BOOL Sprite::OnCreate(HWND hWnd, LPCREATESTRUCT lpCreateStruct)
     SetWindowLong(hWnd, GWL_EXSTYLE, WS_EX_LAYERED | WS_EX_TOOLWINDOW | WS_EX_TOPMOST);
     SetLayeredWindowAttributes(hWnd, RGB(0, 250, 250), 255, LWA_COLORKEY);   // LWA_ALPHA | LWA_COLORKEY
     SetWindowPos(hWnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+    SetTimer(hWnd, IDT_WINDOW_DETECTION, 35, NULL);
     return TRUE;
 }
 
@@ -195,6 +285,8 @@ void Sprite::OnClose(HWND hwnd)
 
 void Sprite::OnDestroy(HWND hWnd)
 {
+    KillTimer(hWnd, IDT_ANIMATION);
+    KillTimer(hWnd, IDT_WINDOW_DETECTION);
     m_hWnd = NULL;   // 窗口被销毁，清除句柄引用
     PostQuitMessage(0);    // 发送结束程序消息
 }
@@ -228,9 +320,10 @@ void Sprite::OnActivate(HWND hWnd, UINT state, HWND hwndActDeact, BOOL fMinimize
 
 void Sprite::OnTimer(HWND hWnd, UINT id)
 {
-    if (id == IDT_ANIMATION) {
+    switch (id) {
+    case IDT_ANIMATION:
         if (m_AnimationStatus.running) {
-            const ACTION *pAction = m_AnimationStatus.action;
+            const ACTION* pAction = m_AnimationStatus.action;
             if (pAction->length > 0) {
                 SetFrame(pAction->frames[m_AnimationStatus.frameIndex]);
                 if (m_AnimationStatus.frameIndex + 1 < pAction->length - 1) {
@@ -246,6 +339,24 @@ void Sprite::OnTimer(HWND hWnd, UINT id)
                 }
             }
         }
+    break;
+    case IDT_WINDOW_DETECTION:
+    {
+        if (m_options.selection == SELECTION::ActiveWindow || m_options.selection == SELECTION::Either) {
+            HWND hWndForeground = GetForegroundWindow();
+            if (hWndForeground == m_hWnd || isSelf(hWndForeground)) {
+                return;   // 如果是自己的句柄，则不进行任何操作
+            }
+            if (isExplorer(hWndForeground)) {
+                Set_hWndForeground(NULL);
+            } else {
+                Set_hWndForeground(hWndForeground);
+            }
+        } else {
+            Set_hWndForeground(NULL);
+        }
+    }
+    break;
     }
 }
 
@@ -266,7 +377,6 @@ void Sprite::OnLButtonDown(HWND hwnd, BOOL fDoubleClick, int x, int y, UINT keyF
         m_isMousePrees = TRUE;
         m_mouseXY.x = x;
         m_mouseXY.y = y;
-
         MouseLeftButtonHook();
     }
 }
