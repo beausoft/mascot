@@ -344,6 +344,10 @@ void Sprite::OnTimer(HWND hWnd, UINT id)
     {
         if (m_options.selection == SELECTION::ActiveWindow || m_options.selection == SELECTION::Either) {
             HWND hWndForeground = GetForegroundWindow();
+            if (hWndForeground == NULL) {
+                Set_hWndForeground(NULL);
+                return;
+            }
             if (hWndForeground == m_hWnd || isSelf(hWndForeground)) {
                 return;   // 如果是自己的句柄，则不进行任何操作
             }
@@ -392,9 +396,26 @@ void Sprite::OnLButtonUp(HWND hwnd, int x, int y, UINT keyFlags)
         // 更新位置
         RECT wndRect;
         GetWindowRect(hwnd, &wndRect);
-        int pos = int(wndRect.left / float(GetSystemMetrics(SM_CXFULLSCREEN) - (wndRect.right - wndRect.left)) * 100);
-        if (std::abs(pos - int(m_options.WINPOS)) > 2) {
-            m_options.WINPOS = int(wndRect.left / float(GetSystemMetrics(SM_CXFULLSCREEN) - (wndRect.right - wndRect.left)) * 100);
+        if (m_hWndForeground == NULL) {
+            int pos = int(wndRect.left / float(GetSystemMetrics(SM_CXFULLSCREEN) - (wndRect.right - wndRect.left)) * 100);
+            if (std::abs(pos - int(m_options.WINPOS)) > 2) {
+                m_options.WINPOS = int(wndRect.left / float(GetSystemMetrics(SM_CXFULLSCREEN) - (wndRect.right - wndRect.left)) * 100);
+            }
+        } else {
+            //int width = m_ForegroundWndRect.right - m_ForegroundWndRect.left;
+            //int wndRect.left - m_ForegroundWndRect.left
+            int pos = 0;
+            if (wndRect.left < m_ForegroundWndRect.left) {
+                pos = 0;
+            }
+            else if (wndRect.left > m_ForegroundWndRect.right) {
+                pos = 100;
+            }
+            else {
+                // TODO 继续
+            }
+
+            SetForegroundWindow(m_hWndForeground);
         }
         UpdatePosition();
     }
