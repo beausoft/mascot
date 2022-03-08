@@ -5,6 +5,7 @@
 
 constexpr auto IDT_ANIMATION = 10005;
 constexpr auto IDT_WINDOW_DETECTION = 10006;
+constexpr auto IDT_KEEP_TOP = 10007;
 
 class Sprite
 {

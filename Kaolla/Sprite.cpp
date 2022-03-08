@@ -269,8 +269,9 @@ BOOL Sprite::OnCreate(HWND hWnd, LPCREATESTRUCT lpCreateStruct)
 {
     SetWindowLong(hWnd, GWL_EXSTYLE, WS_EX_LAYERED | WS_EX_TOOLWINDOW | WS_EX_TOPMOST);
     SetLayeredWindowAttributes(hWnd, RGB(0, 250, 250), 255, LWA_COLORKEY);   // LWA_ALPHA | LWA_COLORKEY
-    SetWindowPos(hWnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+    SetWindowPos(hWnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
     SetTimer(hWnd, IDT_WINDOW_DETECTION, 35, NULL);
+    SetTimer(hWnd, IDT_KEEP_TOP, 1000, NULL);
     return TRUE;
 }
 
@@ -283,6 +284,7 @@ void Sprite::OnDestroy(HWND hWnd)
 {
     KillTimer(hWnd, IDT_ANIMATION);
     KillTimer(hWnd, IDT_WINDOW_DETECTION);
+    KillTimer(hWnd, IDT_KEEP_TOP);
     m_hWnd = NULL;   // 窗口被销毁，清除句柄引用
     PostQuitMessage(0);    // 发送结束程序消息
 }
@@ -310,7 +312,7 @@ void Sprite::OnActivate(HWND hWnd, UINT state, HWND hwndActDeact, BOOL fMinimize
 {
     if ((state == WA_ACTIVE || state == WA_CLICKACTIVE) && !fMinimized) {
         // 窗口激活时进行置前操作
-        SetWindowPos(hWnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+        SetWindowPos(hWnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
     }
 }
 
@@ -361,6 +363,10 @@ void Sprite::OnTimer(HWND hWnd, UINT id)
         }
     }
     break;
+    case IDT_KEEP_TOP:
+        // 定时器不停的刷新置顶。。。
+        SetWindowPos(hWnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
+        break;
     }
 }
 
@@ -368,8 +374,7 @@ void Sprite::OnRButtonUp(HWND hWnd, int x, int y, UINT flags)
 {
     POINT pt = { 0 };
     GetCursorPos(&pt);
-    SetForegroundWindow(hWnd);
-
+    // SetForegroundWindow(hWnd);
     HMENU hMenu = GetSubMenu(m_popupMenu, 0);
     TrackPopupMenu(hMenu, TPM_RIGHTBUTTON, pt.x, pt.y, NULL, hWnd, NULL);
 }
