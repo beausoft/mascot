@@ -233,7 +233,7 @@ void Sprite::UpdatePosition()
     } else {
         int targetWndWidth = targetWndRect.right - targetWndRect.left;
         int targetWndHeight = targetWndRect.bottom - targetWndRect.top;
-        int x = int(targetWndWidth * (m_options.WINPOS / 100.f) + targetWndRect.left + m_frame.offsetX);
+        int x = int((targetWndWidth - (wndRect.right - wndRect.left)) * (m_options.WINPOS / 100.f) + targetWndRect.left + m_frame.offsetX);
         int y = targetWndRect.top - wndHeight + m_frame.offsetY;
         MoveWindow(m_hWnd, x, y, wndWidth, wndHeight, TRUE);
     }
@@ -242,15 +242,13 @@ void Sprite::UpdatePosition()
 void Sprite::Set_hWndForeground(HWND hWndForeground)
 {
     bool change = false;
-
     if (m_hWndForeground != hWndForeground) {
         change = true;
+        m_hWndForeground = hWndForeground;
     }
-    m_hWndForeground = hWndForeground;
-    
-    if (hWndForeground != NULL) {
+    if (m_hWndForeground != NULL) {
         RECT foregroundWndRect = { 0 };
-        GetWindowRect(hWndForeground, &foregroundWndRect);
+        GetWindowRect(m_hWndForeground, &foregroundWndRect);
         if (foregroundWndRect.top != m_ForegroundWndRect.top
             || foregroundWndRect.left != m_ForegroundWndRect.left
             || foregroundWndRect.right != m_ForegroundWndRect.right
@@ -259,11 +257,9 @@ void Sprite::Set_hWndForeground(HWND hWndForeground)
             m_ForegroundWndRect = foregroundWndRect;
             change = true;
         }
-    }
-    else {
+    } else {
         m_ForegroundWndRect = { 0 };
     }
-
     if (change) {
         UpdatePosition();
     }
@@ -349,6 +345,10 @@ void Sprite::OnTimer(HWND hWnd, UINT id)
                 return;
             }
             if (hWndForeground == m_hWnd || isSelf(hWndForeground)) {
+                if (m_hWndForeground != NULL && !IsWindow(m_hWndForeground)) {
+                    // 当精灵附着在窗口上时，当窗口被关闭，然后自己切换到精灵的窗口上，导致精灵位置不更新的bug
+                    Set_hWndForeground(NULL);   // 如果窗口句柄无效，说明这个窗口被销毁，将这个前置窗口置空。
+                }
                 return;   // 如果是自己的句柄，则不进行任何操作
             }
             if (isExplorer(hWndForeground)) {
@@ -397,24 +397,17 @@ void Sprite::OnLButtonUp(HWND hwnd, int x, int y, UINT keyFlags)
         RECT wndRect;
         GetWindowRect(hwnd, &wndRect);
         if (m_hWndForeground == NULL) {
-            int pos = int(wndRect.left / float(GetSystemMetrics(SM_CXFULLSCREEN) - (wndRect.right - wndRect.left)) * 100);
+            int width = wndRect.right - wndRect.left;
+            int pos = int((wndRect.left + width / 2) / float(GetSystemMetrics(SM_CXFULLSCREEN)) * 100);
             if (std::abs(pos - int(m_options.WINPOS)) > 2) {
-                m_options.WINPOS = int(wndRect.left / float(GetSystemMetrics(SM_CXFULLSCREEN) - (wndRect.right - wndRect.left)) * 100);
+                m_options.WINPOS = pos;
             }
         } else {
-            //int width = m_ForegroundWndRect.right - m_ForegroundWndRect.left;
-            //int wndRect.left - m_ForegroundWndRect.left
-            int pos = 0;
-            if (wndRect.left < m_ForegroundWndRect.left) {
-                pos = 0;
+            int pos = int(float(wndRect.left - m_ForegroundWndRect.left) / float(m_ForegroundWndRect.right - m_ForegroundWndRect.left) * 100);
+            pos = max(min(pos, 100), 0);
+            if (std::abs(pos - int(m_options.WINPOS)) > 2) {
+                m_options.WINPOS = pos;
             }
-            else if (wndRect.left > m_ForegroundWndRect.right) {
-                pos = 100;
-            }
-            else {
-                // TODO 继续
-            }
-
             SetForegroundWindow(m_hWndForeground);
         }
         UpdatePosition();
