@@ -150,8 +150,10 @@
     <ClInclude Include="Animation.h" />
     <ClInclude Include="hook.h" />
     <ClInclude Include="OptionsDlg.h" />
+    <ClInclude Include="random.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Sprite.h" />
+    <ClInclude Include="StateMachine.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resource.rc" />

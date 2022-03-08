@@ -133,7 +133,6 @@ void Sprite::PlayAnimation(const ACTION* pAction)
     m_AnimationStatus.action = pAction;
     m_AnimationStatus.frameIndex = 0;
     SetTimer(m_hWnd, IDT_ANIMATION, pAction->interval, NULL);
-    AnimationBeginHook();
 }
 
 void Sprite::StopAnimation()
@@ -145,7 +144,6 @@ void Sprite::StopAnimation()
         m_AnimationStatus.running = FALSE;
         m_AnimationStatus.action = NULL;
         m_AnimationStatus.frameIndex = 0;
-        AnimationEndHook();
     }
 }
 
