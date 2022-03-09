@@ -63,7 +63,7 @@ void OptionsDlg::OnCommand(HWND hwnd, int id, HWND hwndCtl, UINT codeNotify)
 	case IDOK:
 	{
 		OPTIONS* pOptions = (OPTIONS*)GetWindowLongPtr(hwnd, GWLP_USERDATA);
-		pOptions->WINPOS = SendMessage(GetDlgItem(hwnd, IDC_SWINPOS), TBM_GETPOS, 0, 0);
+		pOptions->WINPOS = (UINT)SendMessage(GetDlgItem(hwnd, IDC_SWINPOS), TBM_GETPOS, 0, 0);
 		
 		if (IsDlgButtonChecked(hwnd, IDC_REITHER)) {
 			pOptions->selection = SELECTION::Either;
