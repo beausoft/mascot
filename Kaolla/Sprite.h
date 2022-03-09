@@ -1,7 +1,7 @@
 #pragma once
 #include<Windows.h>
-#include "OptionsDlg.h"
 #include "Animation.h"
+#include "OptionsDlg.h"
 
 constexpr auto IDT_ANIMATION = 10005;
 constexpr auto IDT_WINDOW_DETECTION = 10006;
@@ -40,6 +40,8 @@ private:
 	void OnLButtonUp(HWND hwnd, int x, int y, UINT keyFlags);
 	void OnMouseMove(HWND hwnd, int x, int y, UINT keyFlags);
 	void OnCommand(HWND hwnd, int id, HWND hwndCtl, UINT codeNotify);
+	void OnInitMenuPopup(HWND hwnd, HMENU hMenu, UINT item, BOOL fSystemMenu);
+	void OnUnInitMenuPopup(HWND hwnd, HMENU hMenu);
 private:
 	HWND m_hWnd = NULL;
 	HINSTANCE m_hInstance = NULL;
@@ -51,4 +53,7 @@ private:
 	AnimationStatus m_AnimationStatus = { FALSE, NULL, 0 };
 	HWND m_hWndForeground = NULL;
 	RECT m_ForegroundWndRect = { 0 };
+	void (*m_ClickHook)() = nullptr;
+public:
+	void SetClickHook(void (*hook)());
 };

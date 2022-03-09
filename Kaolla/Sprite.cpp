@@ -1,9 +1,7 @@
 #include "Sprite.h"
-#include <windowsx.h>
-#include "OptionsDlg.h"
 #include "resource.h"
+#include <windowsx.h>
 #include <cmath>
-#include "hook.h"
 #include <Psapi.h>
 #include <string>
 #include <algorithm>
@@ -71,7 +69,7 @@ Sprite::Sprite(HINSTANCE hInstance, LPCWSTR spriteName, INT nWidth, INT nHeight,
     }
     CreateWindow(szWindowClass, spriteName, WS_POPUP | WS_CLIPCHILDREN | WS_CLIPSIBLINGS, x, y, nWidth, nHeight, nullptr, nullptr, m_hInstance, (LPVOID)this);
     // 初始化菜单
-    m_popupMenu = LoadMenu(m_hInstance, MAKEINTRESOURCE(IDR_MENUPOPUP));
+    m_popupMenu = GetSubMenu(LoadMenu(m_hInstance, MAKEINTRESOURCE(IDR_MENUPOPUP)), 0);
     // 设置参数
     if (options != NULL) {
         memcpy(&m_options, options, sizeof(OPTIONS));
@@ -113,6 +111,10 @@ LRESULT Sprite::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             HANDLE_MSG(hWnd, WM_LBUTTONUP, pSprite->OnLButtonUp);
             HANDLE_MSG(hWnd, WM_MOUSEMOVE, pSprite->OnMouseMove);
             HANDLE_MSG(hWnd, WM_COMMAND, pSprite->OnCommand);
+            HANDLE_MSG(hWnd, WM_INITMENUPOPUP, pSprite->OnInitMenuPopup);
+        case WM_UNINITMENUPOPUP:
+            pSprite->OnUnInitMenuPopup(hWnd, (HMENU)wParam);
+            return 0L;
         }
     }
     return DefWindowProc(hWnd, message, wParam, lParam);
@@ -347,7 +349,7 @@ void Sprite::OnTimer(HWND hWnd, UINT id)
                 return;
             }
             if (hWndForeground == m_hWnd || isSelf(hWndForeground)) {
-                if (m_hWndForeground != NULL && !IsWindow(m_hWndForeground)) {
+                if (m_hWndForeground != NULL && (!IsWindow(m_hWndForeground) || IsIconic(m_hWndForeground))) {
                     // 当精灵附着在窗口上时，当窗口被关闭，然后自己切换到精灵的窗口上，导致精灵位置不更新的bug
                     Set_hWndForeground(NULL);   // 如果窗口句柄无效，说明这个窗口被销毁，将这个前置窗口置空。
                 }
@@ -374,9 +376,7 @@ void Sprite::OnRButtonUp(HWND hWnd, int x, int y, UINT flags)
 {
     POINT pt = { 0 };
     GetCursorPos(&pt);
-    // SetForegroundWindow(hWnd);
-    HMENU hMenu = GetSubMenu(m_popupMenu, 0);
-    TrackPopupMenu(hMenu, TPM_RIGHTBUTTON, pt.x, pt.y, NULL, hWnd, NULL);
+    TrackPopupMenu(m_popupMenu, TPM_RIGHTBUTTON, pt.x, pt.y, 0, hWnd, NULL);
 }
 
 void Sprite::OnLButtonDown(HWND hwnd, BOOL fDoubleClick, int x, int y, UINT keyFlags)
@@ -386,7 +386,10 @@ void Sprite::OnLButtonDown(HWND hwnd, BOOL fDoubleClick, int x, int y, UINT keyF
         m_isMousePrees = TRUE;
         m_mouseXY.x = x;
         m_mouseXY.y = y;
-        MouseLeftButtonHook();
+
+        if (m_ClickHook != nullptr) {
+            m_ClickHook();
+        }
     }
 }
 
@@ -404,13 +407,13 @@ void Sprite::OnLButtonUp(HWND hwnd, int x, int y, UINT keyFlags)
         if (m_hWndForeground == NULL) {
             int width = wndRect.right - wndRect.left;
             int pos = int((wndRect.left + width / 2) / float(GetSystemMetrics(SM_CXFULLSCREEN)) * 100);
-            if (std::abs(pos - int(m_options.WINPOS)) > 2) {
+            if (std::abs(pos - int(m_options.WINPOS)) >= 5) {
                 m_options.WINPOS = pos;
             }
         } else {
             int pos = int(float(wndRect.left - m_ForegroundWndRect.left) / float(m_ForegroundWndRect.right - m_ForegroundWndRect.left) * 100);
             pos = max(min(pos, 100), 0);
-            if (std::abs(pos - int(m_options.WINPOS)) > 2) {
+            if (std::abs(pos - int(m_options.WINPOS)) >= 5) {
                 m_options.WINPOS = pos;
             }
             SetForegroundWindow(m_hWndForeground);
@@ -465,4 +468,25 @@ void Sprite::OnCommand(HWND hwnd, int id, HWND hwndCtl, UINT codeNotify)
         DestroyWindow(hwnd);
         break;
     }
+}
+
+void Sprite::OnInitMenuPopup(HWND hWnd, HMENU hMenu, UINT item, BOOL fSystemMenu)
+{
+    if (m_popupMenu == hMenu) {
+        // 弹出菜单时，取消置前定时器
+        KillTimer(hWnd, IDT_KEEP_TOP);
+    }
+}
+
+void Sprite::OnUnInitMenuPopup(HWND hWnd, HMENU hMenu)
+{
+    if (m_popupMenu == hMenu) {
+        // 弹出菜单关闭时，取消置前定时器
+        SetTimer(hWnd, IDT_KEEP_TOP, 1000, NULL);
+    }
+}
+
+void Sprite::SetClickHook(void(*hook)())
+{
+    m_ClickHook = hook;
 }

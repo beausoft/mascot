@@ -41,9 +41,6 @@
     <ClInclude Include="Animation.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="hook.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="StateMachine.h">
       <Filter>头文件</Filter>
     </ClInclude>

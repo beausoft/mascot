@@ -148,7 +148,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
-    <ClInclude Include="hook.h" />
     <ClInclude Include="OptionsDlg.h" />
     <ClInclude Include="random.h" />
     <ClInclude Include="resource.h" />

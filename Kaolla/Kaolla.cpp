@@ -1,7 +1,6 @@
 #include "Sprite.h"
 #include "resource.h"
 #include "OptionsDlg.h"
-#include "hook.h"
 #include "StateMachine.h"
 #include "random.h"
 
@@ -87,6 +86,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
     options.ANIMATION = TRUE;
 
     sprite = new Sprite(hInstance, L"Kaolla", 64, 96, &options);
+    sprite->SetClickHook(MouseLeftButtonHook);
     sprite->SetFrame(USUAL);
     sprite->Show();
 
