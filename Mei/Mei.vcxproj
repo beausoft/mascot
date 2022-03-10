@@ -153,6 +153,15 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="128.ico" />
+    <Image Include="images\blink\169.bmp" />
+    <Image Include="images\blink\170.bmp" />
+    <Image Include="images\blink\bitmap1.bmp" />
+    <Image Include="images\inclination\208.bmp" />
+    <Image Include="images\inclination\209.bmp" />
+    <Image Include="images\usual.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Manifest Include="app.manifest" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

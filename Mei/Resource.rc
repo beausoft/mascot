@@ -54,6 +54,22 @@ END
 // remains consistent on all systems.
 IDI_ICON_MAIN           ICON                    "128.ico"
 
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_BLINK_1             BITMAP                  "images\\blink\\169.bmp"
+
+IDB_BLINK_2             BITMAP                  "images\\blink\\170.bmp"
+
+IDB_USUAL               BITMAP                  "images\\usual.bmp"
+
+IDB_INCLINATION_1       BITMAP                  "images\\inclination\\208.bmp"
+
+IDB_INCLINATION_2       BITMAP                  "images\\inclination\\209.bmp"
+
 #endif    // 中文(简体，中国) resources
 /////////////////////////////////////////////////////////////////////////////
 

@@ -418,7 +418,7 @@ void CSprite::OnLButtonUp(HWND hwnd, int x, int y, UINT keyFlags)
             }
         }
         else {
-            int pos = int(float(wndRect.left - m_ForegroundWndRect.left) / float(m_ForegroundWndRect.right - m_ForegroundWndRect.left) * 100);
+            int pos = int(float(wndRect.left - m_ForegroundWndRect.left) / float(m_ForegroundWndRect.right - m_ForegroundWndRect.left - (wndRect.right - wndRect.left)) * 100);
             pos = max(min(pos, 100), 0);
             if (std::abs(pos - int(m_options.WINPOS)) >= 5) {
                 m_options.WINPOS = pos;

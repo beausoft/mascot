@@ -33,5 +33,28 @@
     <Image Include="128.ico">
       <Filter>资源文件</Filter>
     </Image>
+    <Image Include="images\blink\169.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\blink\170.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\blink\bitmap1.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\usual.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\inclination\208.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\inclination\209.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Manifest Include="app.manifest">
+      <Filter>资源文件</Filter>
+    </Manifest>
   </ItemGroup>
 </Project>
