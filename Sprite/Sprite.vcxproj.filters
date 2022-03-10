@@ -24,6 +24,9 @@
     <ClCompile Include="ISprite.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="COptionsDlg.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ISprite.h">
@@ -32,5 +35,16 @@
     <ClInclude Include="CSprite.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="COptionsDlg.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Resource.rc">
+      <Filter>资源文件</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

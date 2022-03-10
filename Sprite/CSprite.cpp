@@ -4,6 +4,8 @@
 #include <Psapi.h>
 #include <string>
 #include <algorithm>
+#include "resource.h"
+#include "COptionsDlg.h"
 
 BOOL isExplorer(_In_ HWND hWnd) {
     DWORD dwPid;
@@ -68,7 +70,8 @@ CSprite::CSprite(HINSTANCE hInstance, LPCWSTR spriteName, INT nWidth, INT nHeigh
     }
     CreateWindow(szWindowClass, spriteName, WS_POPUP | WS_CLIPCHILDREN | WS_CLIPSIBLINGS, x, y, nWidth, nHeight, nullptr, nullptr, m_hInstance, (LPVOID)this);
     // 初始化菜单
-    // TODO m_popupMenu = GetSubMenu(LoadMenu(m_hInstance, MAKEINTRESOURCE(IDR_MENUPOPUP)), 0);
+    extern HINSTANCE g_hInst;
+    m_popupMenu = GetSubMenu(LoadMenu(g_hInst, MAKEINTRESOURCE(IDR_MENUPOPUP)), 0);
     // 设置参数
     if (options != NULL) {
         memcpy(&m_options, options, sizeof(OPTIONS));
@@ -457,15 +460,16 @@ INT_PTR CALLBACK AboutDialogProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM 
 
 void CSprite::OnCommand(HWND hwnd, int id, HWND hwndCtl, UINT codeNotify)
 {
-    /*     TODO 
     switch (id) {
     case ID_POPUP_SETTINGS:
         Hidden();
-        OptionsDlg::ShowDialog(m_hInstance, hwnd, &m_options);
+        extern HINSTANCE g_hInst;
+        COptionsDlg::ShowDialog(g_hInst, hwnd, &m_options);
         Show();
         break;
     case ID_POPUP_ABOUT:
-        DialogBox(m_hInstance, MAKEINTRESOURCE(IDD_ABOUT), hwnd, AboutDialogProc);
+        extern HINSTANCE g_hInst;
+        DialogBox(g_hInst, MAKEINTRESOURCE(IDD_ABOUT), hwnd, AboutDialogProc);
         break;
     case ID_POPUP_QUIT:
         break;
@@ -473,7 +477,6 @@ void CSprite::OnCommand(HWND hwnd, int id, HWND hwndCtl, UINT codeNotify)
         DestroyWindow(hwnd);
         break;
     }
-    */
 }
 
 void CSprite::OnInitMenuPopup(HWND hWnd, HMENU hMenu, UINT item, BOOL fSystemMenu)

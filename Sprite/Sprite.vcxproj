@@ -142,13 +142,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="COptionsDlg.cpp" />
     <ClCompile Include="CSprite.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="ISprite.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="COptionsDlg.h" />
     <ClInclude Include="CSprite.h" />
     <ClInclude Include="ISprite.h" />
+    <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Resource.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
