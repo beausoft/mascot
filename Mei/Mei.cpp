@@ -31,6 +31,9 @@ ISprite* pSprite = NULL;
 const ACTION* INIT_ACTION = NULL;
 const ACTION* BLINK_ACTION = NULL;
 const ACTION* INCLINATION_ACTION = NULL;
+const ACTION* ACTION_1 = NULL;
+const ACTION* ACTION_2 = NULL;
+const ACTION* ACTION_3 = NULL;
 
 VOID CALLBACK ActionTimer(HWND hWnd, UINT uMsg, UINT_PTR idEvent, DWORD dwTime) {
     if (idEvent == IDT_TRIGGER_ANIMATION) {
@@ -39,6 +42,15 @@ VOID CALLBACK ActionTimer(HWND hWnd, UINT uMsg, UINT_PTR idEvent, DWORD dwTime) 
             if (prob <= 0.5f) {
                 pSprite->PlayAnimation(BLINK_ACTION);
             }
+            else if (prob > 0.7) {
+                pSprite->PlayAnimation(ACTION_1);
+            }
+            else if (prob > 0.8) {
+                pSprite->PlayAnimation(ACTION_2);
+            }
+            else if (prob > 0.9) {
+                pSprite->PlayAnimation(ACTION_3);
+            }
         }
     }
 }
@@ -46,7 +58,7 @@ VOID CALLBACK ActionTimer(HWND hWnd, UINT uMsg, UINT_PTR idEvent, DWORD dwTime) 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR lpCmdLine, _In_ int nCmdShow) {
     FRAME USUAL = { IDB_USUAL , 0, 20 };
 	FRAME INIT_FRAMES[] = { USUAL };
-	INIT_ACTION = CreateAnimationAction(INIT_FRAMES, 1, 50, NULL, FALSE);
+	INIT_ACTION = CreateAnimationAction(INIT_FRAMES, 1, 50, IDR_WAVE1, FALSE);
 
     FRAME BLINK_1 = { IDB_BLINK_1, 0, 20 };
     FRAME BLINK_2 = { IDB_BLINK_2, 0, 20 };
@@ -56,7 +68,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
     FRAME INCLINATION_1 = { IDB_INCLINATION_1, 0, 20 };
     FRAME INCLINATION_2 = { IDB_INCLINATION_2, 0, 20 };
     FRAME INCLINATION_FRAMES[] = { INCLINATION_1, INCLINATION_1, INCLINATION_2, INCLINATION_2, INCLINATION_2, USUAL };
-    INCLINATION_ACTION = CreateAnimationAction(INCLINATION_FRAMES, 6, 80, NULL, FALSE);
+    INCLINATION_ACTION = CreateAnimationAction(INCLINATION_FRAMES, 6, 80, IDR_WAVE3, FALSE);
+
+    ACTION_1 = CreateAnimationAction(&USUAL, 1, 80, IDR_WAVE2, FALSE);
+    ACTION_2 = CreateAnimationAction(&USUAL, 1, 80, IDR_WAVE4, FALSE);
+    ACTION_3 = CreateAnimationAction(&USUAL, 1, 80, IDR_WAVE5, FALSE);
 
     OPTIONS options = { 50, TRUE, TRUE, SELECTION::StartMenu };
 
@@ -67,10 +83,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
     pSprite->SetClickHook([]() {
         KillTimer(pSprite->GetHandle(), IDT_TRIGGER_ANIMATION);
         pSprite->PlayAnimation(INCLINATION_ACTION);
-        SetTimer(pSprite->GetHandle(), IDT_TRIGGER_ANIMATION, 6000, ActionTimer);
+        SetTimer(pSprite->GetHandle(), IDT_TRIGGER_ANIMATION, 5000, ActionTimer);
     });
 
-    SetTimer(pSprite->GetHandle(), IDT_TRIGGER_ANIMATION, 6000, ActionTimer);
+    SetTimer(pSprite->GetHandle(), IDT_TRIGGER_ANIMATION, 5000, ActionTimer);
 
 	int ret = pSprite->EventLoop();
 

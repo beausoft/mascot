@@ -5,6 +5,7 @@
 #include <Psapi.h>
 #include <string>
 #include <algorithm>
+#include <vector>
 
 BOOL isExplorer(_In_ HWND hWnd) {
     DWORD dwPid;
@@ -32,9 +33,30 @@ BOOL isSelf(_In_ HWND hWnd) {
     DWORD dwPid;
     if (GetWindowThreadProcessId(hWnd, &dwPid)) {
         DWORD dwMyPid = GetCurrentProcessId();
-        return dwPid == dwMyPid;
+        if (dwPid == dwMyPid) {
+            return TRUE;
+        }
+    }
+    WCHAR className[64] = { 0 };
+    if (GetClassName(hWnd, className, 64)) {
+        std::wstring classNameStr(className);
+        if (classNameStr.find(L"BeausoftMascot-") == 0) {
+            return TRUE;
+        }
     }
     return FALSE;
+}
+
+BOOL CALLBACK EnumWindowsProc(HWND hWnd, LPARAM lParam) {
+    std::vector<HWND>* list = (std::vector<HWND>*)lParam;
+    WCHAR className[64] = { 0 };
+    if (GetClassName(hWnd, className, 63)) {
+        std::wstring classNameStr(className);
+        if (classNameStr.find(L"BeausoftMascot-") == 0) {
+            list->push_back(hWnd);
+        }
+    }
+    return TRUE;
 }
 
 Sprite::Sprite(HINSTANCE hInstance, LPCWSTR spriteName, INT nWidth, INT nHeight, const OPTIONS* options)
@@ -48,7 +70,7 @@ Sprite::Sprite(HINSTANCE hInstance, LPCWSTR spriteName, INT nWidth, INT nHeight,
     }
     static int WndIdx = 0;
     WCHAR szWindowClass[32] = { 0 };
-    wsprintf(szWindowClass, L"Mascot-%s-%d", spriteName, WndIdx++);
+    wsprintf(szWindowClass, L"BeausoftMascot-%s-%d", spriteName, WndIdx++);
 
     WNDCLASSEXW wcex;
     wcex.cbSize = sizeof(WNDCLASSEX);
@@ -411,7 +433,7 @@ void Sprite::OnLButtonUp(HWND hwnd, int x, int y, UINT keyFlags)
                 m_options.WINPOS = pos;
             }
         } else {
-            int pos = int(float(wndRect.left - m_ForegroundWndRect.left) / float(m_ForegroundWndRect.right - m_ForegroundWndRect.left) * 100);
+            int pos = int(float(wndRect.left - m_ForegroundWndRect.left) / float(m_ForegroundWndRect.right - m_ForegroundWndRect.left - (wndRect.right - wndRect.left)) * 100);
             pos = max(min(pos, 100), 0);
             if (std::abs(pos - int(m_options.WINPOS)) >= 5) {
                 m_options.WINPOS = pos;
@@ -463,7 +485,14 @@ void Sprite::OnCommand(HWND hwnd, int id, HWND hwndCtl, UINT codeNotify)
         DialogBox(m_hInstance, MAKEINTRESOURCE(IDD_ABOUT), hwnd, AboutDialogProc);
         break;
     case ID_POPUP_QUIT:
-        break;
+    {
+        std::vector<HWND> allSpriteWnd;
+        EnumWindows(EnumWindowsProc, (LPARAM)&allSpriteWnd);
+        for (auto iter = allSpriteWnd.cbegin(); iter != allSpriteWnd.cend(); iter++) {
+            SendMessage(*iter, WM_CLOSE, 0, 0);
+        }
+    }
+    break;
     case ID_POPUP_EXIT:
         DestroyWindow(hwnd);
         break;

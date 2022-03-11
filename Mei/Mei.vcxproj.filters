@@ -57,4 +57,21 @@
       <Filter>资源文件</Filter>
     </Manifest>
   </ItemGroup>
+  <ItemGroup>
+    <Media Include="sounds\00001.wav">
+      <Filter>资源文件</Filter>
+    </Media>
+    <Media Include="sounds\00002.wav">
+      <Filter>资源文件</Filter>
+    </Media>
+    <Media Include="sounds\00003.wav">
+      <Filter>资源文件</Filter>
+    </Media>
+    <Media Include="sounds\00004.wav">
+      <Filter>资源文件</Filter>
+    </Media>
+    <Media Include="sounds\00005.wav">
+      <Filter>资源文件</Filter>
+    </Media>
+  </ItemGroup>
 </Project>

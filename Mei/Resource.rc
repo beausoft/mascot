@@ -70,6 +70,22 @@ IDB_INCLINATION_1       BITMAP                  "images\\inclination\\208.bmp"
 
 IDB_INCLINATION_2       BITMAP                  "images\\inclination\\209.bmp"
 
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// WAVE
+//
+
+IDR_WAVE1               WAVE                    "sounds\\00001.wav"
+
+IDR_WAVE2               WAVE                    "sounds\\00002.wav"
+
+IDR_WAVE3               WAVE                    "sounds\\00003.wav"
+
+IDR_WAVE4               WAVE                    "sounds\\00004.wav"
+
+IDR_WAVE5               WAVE                    "sounds\\00005.wav"
+
 #endif    // 中文(简体，中国) resources
 /////////////////////////////////////////////////////////////////////////////
 

@@ -6,6 +6,7 @@
 #include <algorithm>
 #include "resource.h"
 #include "COptionsDlg.h"
+#include <vector>
 
 BOOL isExplorer(_In_ HWND hWnd) {
     DWORD dwPid;
@@ -33,9 +34,30 @@ BOOL isSelf(_In_ HWND hWnd) {
     DWORD dwPid;
     if (GetWindowThreadProcessId(hWnd, &dwPid)) {
         DWORD dwMyPid = GetCurrentProcessId();
-        return dwPid == dwMyPid;
+        if (dwPid == dwMyPid) {
+            return TRUE;
+        }
+    }
+    WCHAR className[64] = { 0 };
+    if (GetClassName(hWnd, className, 64)) {
+        std::wstring classNameStr(className);
+        if (classNameStr.find(L"BeausoftMascot-") == 0) {
+            return TRUE;
+        }
     }
     return FALSE;
+}
+
+BOOL CALLBACK EnumWindowsProc(HWND hWnd, LPARAM lParam) {
+    std::vector<HWND>* list = (std::vector<HWND>*)lParam;
+    WCHAR className[64] = { 0 };
+    if (GetClassName(hWnd, className, 63)) {
+        std::wstring classNameStr(className);
+        if (classNameStr.find(L"BeausoftMascot-") == 0) {
+            list->push_back(hWnd);
+        }
+    }
+    return TRUE;
 }
 
 CSprite::CSprite(HINSTANCE hInstance, LPCWSTR spriteName, INT nWidth, INT nHeight, const OPTIONS* options)
@@ -49,7 +71,7 @@ CSprite::CSprite(HINSTANCE hInstance, LPCWSTR spriteName, INT nWidth, INT nHeigh
     }
     static int WndIdx = 0;
     WCHAR szWindowClass[32] = { 0 };
-    wsprintf(szWindowClass, L"Mascot-%s-%d", spriteName, WndIdx++);
+    wsprintf(szWindowClass, L"BeausoftMascot-%s-%d", spriteName, WndIdx++);
 
     WNDCLASSEXW wcex;
     wcex.cbSize = sizeof(WNDCLASSEX);
@@ -472,7 +494,14 @@ void CSprite::OnCommand(HWND hwnd, int id, HWND hwndCtl, UINT codeNotify)
         DialogBox(g_hInst, MAKEINTRESOURCE(IDD_ABOUT), hwnd, AboutDialogProc);
         break;
     case ID_POPUP_QUIT:
-        break;
+    {
+        std::vector<HWND> allSpriteWnd;
+        EnumWindows(EnumWindowsProc, (LPARAM)&allSpriteWnd);
+        for (auto iter = allSpriteWnd.cbegin(); iter != allSpriteWnd.cend(); iter++) {
+            SendMessage(*iter, WM_CLOSE, 0, 0);
+        }
+    }
+    break;
     case ID_POPUP_EXIT:
         DestroyWindow(hwnd);
         break;
