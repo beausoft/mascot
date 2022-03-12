@@ -70,10 +70,10 @@ BEGIN
             VALUE "CompanyName", "Beausoft"
             VALUE "FileDescription", "桌面精灵重置版"
             VALUE "FileVersion", "1.0.0.1"
-            VALUE "InternalName", "Mitsune.exe"
+            VALUE "InternalName", "Sara.exe"
             VALUE "LegalCopyright", "Copyright (C) 2022"
-            VALUE "OriginalFilename", "Mitsune.exe"
-            VALUE "ProductName", "Mitsune"
+            VALUE "OriginalFilename", "Sara.exe"
+            VALUE "ProductName", "Sara"
             VALUE "ProductVersion", "1.0.0.1"
         END
     END
@@ -97,31 +97,7 @@ IDR_WAVE3               WAVE                    "sounds\\00003.wav"
 
 IDR_WAVE4               WAVE                    "sounds\\00004.wav"
 
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// Bitmap
-//
-
-IDB_USUAL               BITMAP                  "images\\usual.bmp"
-
-IDB_SHAKE_1             BITMAP                  "images\\shake\\182.bmp"
-
-IDB_SHAKE_2             BITMAP                  "images\\shake\\183.bmp"
-
-IDB_SHAKE_3             BITMAP                  "images\\shake\\184.bmp"
-
-IDB_SHAKE_4             BITMAP                  "images\\shake\\185.bmp"
-
-IDB_SHAKE_5             BITMAP                  "images\\shake\\186.bmp"
-
-IDB_SLEEP_1             BITMAP                  "images\\sleep\\440.bmp"
-
-IDB_SLEEP_2             BITMAP                  "images\\sleep\\441.bmp"
-
-IDB_SLEEP_3             BITMAP                  "images\\sleep\\442.bmp"
-
-IDB_SLEEP_4             BITMAP                  "images\\sleep\\443.bmp"
+IDR_WAVE5               WAVE                    "sounds\\00005.wav"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -132,6 +108,38 @@ IDB_SLEEP_4             BITMAP                  "images\\sleep\\443.bmp"
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
 IDI_ICON_MAIN           ICON                    "128.ico"
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_ACTION1_1           BITMAP                  "images\\action1\\344.bmp"
+
+IDB_ACTION1_2           BITMAP                  "images\\action1\\345.bmp"
+
+IDB_ACTION1_3           BITMAP                  "images\\action1\\346.bmp"
+
+IDB_ACTION1_4           BITMAP                  "images\\action1\\347.bmp"
+
+IDB_USUAL_1             BITMAP                  "images\\USUAL_1.bmp"
+
+IDB_USUAL_2             BITMAP                  "images\\USUAL_2.bmp"
+
+IDB_ACTION2_1           BITMAP                  "images\\action2\\386.bmp"
+
+IDB_ACTION2_2           BITMAP                  "images\\action2\\387.bmp"
+
+IDB_ACTION2_3           BITMAP                  "images\\action2\\388.bmp"
+
+IDB_ACTION3_1           BITMAP                  "images\\action3\\306.bmp"
+
+IDB_ACTION3_2           BITMAP                  "images\\action3\\307.bmp"
+
+IDB_ACTION4_1           BITMAP                  "images\\action4\\100.bmp"
+
+IDB_ACTION4_2           BITMAP                  "images\\action4\\101.bmp"
 
 #endif    // 中文(简体，中国) resources
 /////////////////////////////////////////////////////////////////////////////

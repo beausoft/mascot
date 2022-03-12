@@ -17,6 +17,7 @@
 #define IDB_SLEEP_3                     113
 #define IDB_SLEEP_4                     114
 #define IDI_ICON1                       115
+#define IDI_ICON_MAIN                   115
 
 // Next default values for new objects
 // 
