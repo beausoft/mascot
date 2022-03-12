@@ -104,18 +104,24 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
     State<StateEvent>* randomTriggerState = new State<StateEvent>;
     randomTriggerState->setEnter([]() { KillTimer(sprite->GetHandle(), IDT_TRIGGER_ANIMATION); });
     randomTriggerState->setExec([]() {
-        float prob = GetProb();
-        if (prob <= 0.15) {
-            sprite->PlayAnimation(LAUGH_ACTION_A);
-        } else if (prob <= 0.25) {
-            sprite->PlayAnimation(LAUGH_ACTION_B);
-        } else if (prob <= 0.35) {
-            sprite->PlayAnimation(OTHER_ACTION);
-        } else if (prob <= 0.45) {
-            stateMachine->doAction(StateEvent::PLAY_HYPSOKINESIS);
-            return;
-        } else {
+        if (GetProb() <= 0.75f) {
             sprite->PlayAnimation(BLINK_ACTION);
+        }
+        else {
+            float prob = GetProb();
+            if (prob <= 0.25f) {
+                sprite->PlayAnimation(LAUGH_ACTION_A);
+            }
+            else if (prob <= 0.5f) {
+                sprite->PlayAnimation(LAUGH_ACTION_B);
+            }
+            else if (prob <= 0.75f) {
+                stateMachine->doAction(StateEvent::PLAY_HYPSOKINESIS);
+                return;
+            }
+            else {
+                sprite->PlayAnimation(OTHER_ACTION);
+            }
         }
         stateMachine->doAction(StateEvent::CONTINUE);
     });

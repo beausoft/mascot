@@ -38,18 +38,20 @@ const ACTION* ACTION_3 = NULL;
 VOID CALLBACK ActionTimer(HWND hWnd, UINT uMsg, UINT_PTR idEvent, DWORD dwTime) {
     if (idEvent == IDT_TRIGGER_ANIMATION) {
         if (pSprite != NULL) {
-            float prob = GetProb();
-            if (prob <= 0.5f) {
+            if (GetProb() <= 0.8f) {
                 pSprite->PlayAnimation(BLINK_ACTION);
             }
-            else if (prob > 0.7) {
-                pSprite->PlayAnimation(ACTION_1);
-            }
-            else if (prob > 0.8) {
-                pSprite->PlayAnimation(ACTION_2);
-            }
-            else if (prob > 0.9) {
-                pSprite->PlayAnimation(ACTION_3);
+            else {
+                float prob = GetProb();
+                if (prob < 0.3) {
+                    pSprite->PlayAnimation(ACTION_1);
+                }
+                else if (prob < 0.6) {
+                    pSprite->PlayAnimation(ACTION_2);
+                }
+                else if (prob < 0.9) {
+                    pSprite->PlayAnimation(ACTION_3);
+                }
             }
         }
     }
@@ -83,14 +85,21 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
     pSprite->SetClickHook([]() {
         KillTimer(pSprite->GetHandle(), IDT_TRIGGER_ANIMATION);
         pSprite->PlayAnimation(INCLINATION_ACTION);
-        SetTimer(pSprite->GetHandle(), IDT_TRIGGER_ANIMATION, 5000, ActionTimer);
+        SetTimer(pSprite->GetHandle(), IDT_TRIGGER_ANIMATION, 8000, ActionTimer);
     });
 
-    SetTimer(pSprite->GetHandle(), IDT_TRIGGER_ANIMATION, 5000, ActionTimer);
+    SetTimer(pSprite->GetHandle(), IDT_TRIGGER_ANIMATION, 8000, ActionTimer);
 
 	int ret = pSprite->EventLoop();
 
+    KillTimer(pSprite->GetHandle(), IDT_TRIGGER_ANIMATION);
+
 	ReleaseSprite(pSprite);
     DeleteAnimationAction(INIT_ACTION);
+    DeleteAnimationAction(BLINK_ACTION);
+    DeleteAnimationAction(INCLINATION_ACTION);
+    DeleteAnimationAction(ACTION_1);
+    DeleteAnimationAction(ACTION_2);
+    DeleteAnimationAction(ACTION_3);
 	return ret;
 }
