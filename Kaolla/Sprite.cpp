@@ -347,13 +347,14 @@ void Sprite::OnTimer(HWND hWnd, UINT id)
         if (m_AnimationStatus.running) {
             const ACTION* pAction = m_AnimationStatus.action;
             if (pAction->length > 0) {
-                SetFrame(pAction->frames[m_AnimationStatus.frameIndex]);
                 if (m_AnimationStatus.frameIndex + 1 < pAction->length) {
+                    SetFrame(pAction->frames[m_AnimationStatus.frameIndex]);
                     m_AnimationStatus.frameIndex = m_AnimationStatus.frameIndex + 1;
                 }
                 else {
                     if (pAction->loop) {
                         m_AnimationStatus.frameIndex = 0;
+                        SetFrame(pAction->frames[m_AnimationStatus.frameIndex]);
                     }
                     else {
                         StopAnimation();
