@@ -13,6 +13,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Mitsune", "Mitsune\Mitsune.
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Sara", "Sara\Sara.vcxproj", "{565757B5-CC6E-45A2-868E-E8AE92EAC607}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Naru", "Naru\Naru.vcxproj", "{0FD5EDA3-9BA1-4B78-8DAA-404BC9ED77F4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -61,6 +63,14 @@ Global
 		{565757B5-CC6E-45A2-868E-E8AE92EAC607}.Release|x64.Build.0 = Release|x64
 		{565757B5-CC6E-45A2-868E-E8AE92EAC607}.Release|x86.ActiveCfg = Release|Win32
 		{565757B5-CC6E-45A2-868E-E8AE92EAC607}.Release|x86.Build.0 = Release|Win32
+		{0FD5EDA3-9BA1-4B78-8DAA-404BC9ED77F4}.Debug|x64.ActiveCfg = Debug|x64
+		{0FD5EDA3-9BA1-4B78-8DAA-404BC9ED77F4}.Debug|x64.Build.0 = Debug|x64
+		{0FD5EDA3-9BA1-4B78-8DAA-404BC9ED77F4}.Debug|x86.ActiveCfg = Debug|Win32
+		{0FD5EDA3-9BA1-4B78-8DAA-404BC9ED77F4}.Debug|x86.Build.0 = Debug|Win32
+		{0FD5EDA3-9BA1-4B78-8DAA-404BC9ED77F4}.Release|x64.ActiveCfg = Release|x64
+		{0FD5EDA3-9BA1-4B78-8DAA-404BC9ED77F4}.Release|x64.Build.0 = Release|x64
+		{0FD5EDA3-9BA1-4B78-8DAA-404BC9ED77F4}.Release|x86.ActiveCfg = Release|Win32
+		{0FD5EDA3-9BA1-4B78-8DAA-404BC9ED77F4}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

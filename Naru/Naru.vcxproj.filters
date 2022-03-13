@@ -1,0 +1,162 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="resource.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Naru.rc">
+      <Filter>资源文件</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="128.ico">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\400.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\401.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\402.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\417.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\418.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\419.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\433.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\434.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\435.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\442.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\443.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\444.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\464.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\465.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\466.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\477.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\478.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\479.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\492.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\493.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\494.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\504.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\505.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\506.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\593.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\594.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\595.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\642.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\643.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\644.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\658.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\659.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\660.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\670.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\671.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\672.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Naru.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="sounds\00001.wav">
+      <Filter>资源文件</Filter>
+    </Media>
+    <Media Include="sounds\00002.wav">
+      <Filter>资源文件</Filter>
+    </Media>
+    <Media Include="sounds\00003.wav">
+      <Filter>资源文件</Filter>
+    </Media>
+    <Media Include="sounds\00004.wav">
+      <Filter>资源文件</Filter>
+    </Media>
+    <Media Include="sounds\00005.wav">
+      <Filter>资源文件</Filter>
+    </Media>
+  </ItemGroup>
+</Project>
