@@ -141,6 +141,8 @@ IDB_ACTION4_1           BITMAP                  "images\\action4\\100.bmp"
 
 IDB_ACTION4_2           BITMAP                  "images\\action4\\101.bmp"
 
+IDB_ACTION5             BITMAP                  "images\\action5.bmp"
+
 #endif    // 中文(简体，中国) resources
 /////////////////////////////////////////////////////////////////////////////
 

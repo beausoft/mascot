@@ -196,6 +196,11 @@ void CSprite::PlayAnimation(const ACTION* pAction)
     m_AnimationStatus.running = TRUE;
     m_AnimationStatus.action = pAction;
     m_AnimationStatus.frameIndex = 0;
+    // ³õÊ¼¾Í²¥·Å
+    if (pAction->length > 0) {
+        SetFrame(pAction->frames[m_AnimationStatus.frameIndex]);
+        m_AnimationStatus.frameIndex = m_AnimationStatus.frameIndex + 1;
+    }
     SetTimer(m_hWnd, IDT_ANIMATION, pAction->interval, NULL);
 }
 

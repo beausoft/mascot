@@ -171,6 +171,7 @@
     <Image Include="images\action3\307.bmp" />
     <Image Include="images\action4\100.bmp" />
     <Image Include="images\action4\101.bmp" />
+    <Image Include="images\action5.bmp" />
     <Image Include="images\USUAL_1.bmp" />
     <Image Include="images\USUAL_2.bmp" />
   </ItemGroup>
