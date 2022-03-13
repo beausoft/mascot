@@ -1,11 +1,7 @@
 #include <Windows.h>
 #include "../Sprite/ISprite.h"
 #include "resource.h"
-#include <cstdlib>
-
-float GetProb() {
-    return (std::rand() % 100 + 1) / 100.f;
-}
+#include "../Kaolla/random.h"
 
 constexpr auto IDT_TRIGGER_ANIMATION = 10001;
 

@@ -43,6 +43,9 @@ public:
 	virtual void PlayAnimation(const ACTION* pAction) = 0;
 	virtual void StopAnimation() = 0;
 	virtual void SetClickHook(void (*hook)()) = 0;
+	virtual HMENU AppendPopupMenu(LPCWSTR text) = 0;
+	virtual BOOL AppendChildMenu(HMENU hMenu, UINT identifier, LPCWSTR text) = 0;
+	virtual void SetMenuCommandHook(void (*menuCommandHook)(HMENU, UINT)) = 0;
 };
 
 #define EXPORT_API __declspec(dllexport)

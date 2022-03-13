@@ -1,5 +1,6 @@
 #pragma once
 #include "ISprite.h"
+#include <set>
 
 constexpr auto IDT_ANIMATION = 10005;
 constexpr auto IDT_WINDOW_DETECTION = 10006;
@@ -52,7 +53,12 @@ private:
 	HWND m_hWndForeground = NULL;
 	RECT m_ForegroundWndRect = { 0 };
 	void (*m_ClickHook)() = nullptr;
+	std::set<UINT> m_CustomMenuIds;
+	void (*m_MenuCommandHook)(HMENU, UINT) = nullptr;
 public:
 	void SetClickHook(void (*hook)());
+	HMENU AppendPopupMenu(LPCWSTR text);
+	BOOL AppendChildMenu(HMENU hMenu, UINT identifier, LPCWSTR text);
+	void SetMenuCommandHook(void (*menuCommandHook)(HMENU, UINT));
 };
 

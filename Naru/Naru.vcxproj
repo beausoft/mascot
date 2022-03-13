@@ -202,6 +202,9 @@
     <Media Include="sounds\00004.wav" />
     <Media Include="sounds\00005.wav" />
   </ItemGroup>
+  <ItemGroup>
+    <Manifest Include="app.manifest" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

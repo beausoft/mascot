@@ -494,11 +494,11 @@ void CSprite::OnCommand(HWND hwnd, int id, HWND hwndCtl, UINT codeNotify)
         extern HINSTANCE g_hInst;
         COptionsDlg::ShowDialog(g_hInst, hwnd, &m_options);
         Show();
-        break;
+        return;
     case ID_POPUP_ABOUT:
         extern HINSTANCE g_hInst;
         DialogBox(g_hInst, MAKEINTRESOURCE(IDD_ABOUT), hwnd, AboutDialogProc);
-        break;
+        return;
     case ID_POPUP_QUIT:
     {
         std::vector<HWND> allSpriteWnd;
@@ -507,10 +507,14 @@ void CSprite::OnCommand(HWND hwnd, int id, HWND hwndCtl, UINT codeNotify)
             SendMessage(*iter, WM_CLOSE, 0, 0);
         }
     }
-    break;
+    return;
     case ID_POPUP_EXIT:
         DestroyWindow(hwnd);
-        break;
+        return;
+    }
+    if (m_MenuCommandHook != nullptr && m_CustomMenuIds.find((UINT)id) != m_CustomMenuIds.end()) {
+        m_MenuCommandHook(m_popupMenu, (UINT)id);
+        return;
     }
 }
 
@@ -533,4 +537,36 @@ void CSprite::OnUnInitMenuPopup(HWND hWnd, HMENU hMenu)
 void CSprite::SetClickHook(void(*hook)())
 {
     m_ClickHook = hook;
+}
+
+HMENU CSprite::AppendPopupMenu(LPCWSTR text)
+{
+    HMENU popup = CreatePopupMenu();
+    if (InsertMenu(m_popupMenu, 2, MF_BYPOSITION | MF_POPUP, (UINT_PTR)popup, text)) {
+        return popup;
+    }
+    return NULL;
+}
+
+BOOL CSprite::AppendChildMenu(HMENU hMenu, UINT identifier, LPCWSTR text)
+{
+    if (hMenu == NULL) {
+        hMenu = m_popupMenu;
+    }
+    if (identifier == NULL) {
+        return AppendMenu(hMenu, MF_SEPARATOR, NULL, NULL);
+    }
+    const bool is_in = m_CustomMenuIds.find(identifier) != m_CustomMenuIds.end();
+    if (!is_in) {
+        if (AppendMenu(hMenu, MF_STRING, identifier, text)) {
+            m_CustomMenuIds.insert(identifier);
+            return TRUE;
+        }
+    }
+    return FALSE;
+}
+
+void CSprite::SetMenuCommandHook(void(*hook)(HMENU, UINT))
+{
+    m_MenuCommandHook = hook;
 }

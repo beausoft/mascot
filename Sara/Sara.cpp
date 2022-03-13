@@ -2,7 +2,7 @@
 #include "../Sprite/ISprite.h"
 #include "../Kaolla/StateMachine.h"
 #include "resource.h"
-#include <cstdlib>
+#include "../Kaolla/random.h"
 
 constexpr auto IDT_TRIGGER_ANIMATION = 10001;
 
@@ -22,16 +22,6 @@ const ACTION* CreateAnimationAction(const FRAME* frames, int framesLength, int i
 void DeleteAnimationAction(const ACTION* pAction)
 {
     free((ACTION*)pAction);
-}
-
-float GetProb() {
-    return (std::rand() % 100 + 1) / 100.f;
-}
-
-int RandomRange(int start, int end) {
-    float prob = GetProb();
-    int ret = int(prob * (end - start) + start);
-    return ret;
 }
 
 enum class StateEvent {
