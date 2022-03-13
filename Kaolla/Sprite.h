@@ -56,4 +56,5 @@ private:
 	void (*m_ClickHook)() = nullptr;
 public:
 	void SetClickHook(void (*hook)());
+	const OPTIONS* GetOptions();
 };

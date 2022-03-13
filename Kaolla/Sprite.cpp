@@ -525,3 +525,8 @@ void Sprite::SetClickHook(void(*hook)())
 {
     m_ClickHook = hook;
 }
+
+const OPTIONS* Sprite::GetOptions()
+{
+    return &m_options;
+}
