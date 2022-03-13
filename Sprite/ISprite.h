@@ -46,6 +46,7 @@ public:
 	virtual HMENU AppendPopupMenu(LPCWSTR text) = 0;
 	virtual BOOL AppendChildMenu(HMENU hMenu, UINT identifier, LPCWSTR text) = 0;
 	virtual void SetMenuCommandHook(void (*menuCommandHook)(HMENU, UINT)) = 0;
+	virtual const OPTIONS* GetOptions() = 0;
 };
 
 #define EXPORT_API __declspec(dllexport)

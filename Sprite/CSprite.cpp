@@ -570,3 +570,8 @@ void CSprite::SetMenuCommandHook(void(*hook)(HMENU, UINT))
 {
     m_MenuCommandHook = hook;
 }
+
+const OPTIONS* CSprite::GetOptions()
+{
+    return &m_options;
+}

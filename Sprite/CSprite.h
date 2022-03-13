@@ -60,5 +60,6 @@ public:
 	HMENU AppendPopupMenu(LPCWSTR text);
 	BOOL AppendChildMenu(HMENU hMenu, UINT identifier, LPCWSTR text);
 	void SetMenuCommandHook(void (*menuCommandHook)(HMENU, UINT));
+	const OPTIONS* GetOptions();
 };
 

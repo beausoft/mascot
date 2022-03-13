@@ -1,6 +1,7 @@
 #include "../Sprite/ISprite.h"
 #include "resource.h"
 #include "../Kaolla/random.h"
+#include "../Mei/Config.h"
 
 constexpr auto IDT_TRIGGER_ANIMATION = 10001;
 
@@ -109,6 +110,7 @@ const ACTION* CLOTHES_L_ACTION_5 = NULL;
 
 VOID CALLBACK ActionTimer(HWND hWnd, UINT uMsg, UINT_PTR idEvent, DWORD dwTime);
 UINT CLOTHING_NUMBER = 1;
+BOOL AUTO_CLOTHING = FALSE;
 void ExecAction(UINT actionNum) {
     KillTimer(pSprite->GetHandle(), IDT_TRIGGER_ANIMATION);
     switch (CLOTHING_NUMBER){
@@ -536,8 +538,22 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
     CLOTHES_L_ACTION_4 = CreateAnimationAction(&CLOTHES_L_3, 1, 50, IDR_WAVE4, FALSE);
     CLOTHES_L_ACTION_5 = CreateAnimationAction(&CLOTHES_L_3, 1, 50, IDR_WAVE5, FALSE);
 
+    LPCWSTR appName = L"Naru";
+
     OPTIONS options = { 90, TRUE, TRUE, SELECTION::StartMenu };
-    pSprite = CreateSprite(hInstance, L"Naru", 80, 120, &options);
+    LoadOptions(hInstance, appName, &options);
+    WCHAR configPath[MAX_PATH];
+    GetConfigPath(hInstance, configPath, MAX_PATH);
+    INT CLOTHING = GetPrivateProfileInt(appName, L"CLOTHING", 0, configPath);
+    if (CLOTHING == 0) {
+        AUTO_CLOTHING = TRUE;
+        CLOTHING_NUMBER = RandomRange(1, 12);
+    }
+    else {
+        CLOTHING_NUMBER = CLOTHING;
+    }
+
+    pSprite = CreateSprite(hInstance, appName, 80, 120, &options);
     HMENU hMenu = pSprite->AppendPopupMenu(L"服装选项");
     pSprite->AppendChildMenu(hMenu, 0xF100, L"自动选择");
     pSprite->AppendChildMenu(hMenu, NULL, NULL);
@@ -553,6 +569,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
     pSprite->AppendChildMenu(hMenu, 0xF10A, L"服装10");
     pSprite->AppendChildMenu(hMenu, 0xF10B, L"服装11");
     pSprite->AppendChildMenu(hMenu, 0xF10C, L"服装12");
+
+    // 根据初始参数选中菜单
+    CheckMenuItem(hMenu, 0xF100 + CLOTHING, MF_BYCOMMAND | MF_CHECKED);
+
     pSprite->SetMenuCommandHook([](HMENU hMenu, UINT id) {
         UINT clothingNumber = id & 0xff;
         for (int i = 0xF100; i <= 0xF112; i++) {
@@ -561,6 +581,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
         CheckMenuItem(hMenu, id, MF_BYCOMMAND | MF_CHECKED);
         if (clothingNumber == 0) {
             clothingNumber = RandomRange(1, 12);
+            AUTO_CLOTHING = TRUE;
+        }
+        else {
+            AUTO_CLOTHING = FALSE;
         }
         CLOTHING_NUMBER = clothingNumber;
         ExecAction(1);
@@ -570,6 +594,17 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
     ExecAction(1);
 
     int ret = pSprite->EventLoop();
+    const OPTIONS* lastOptions = pSprite->GetOptions();
+    SaveOptions(hInstance, appName, lastOptions);
+
+    // 保存服装信息
+    if (AUTO_CLOTHING) {
+        WritePrivateProfileInt(appName, L"CLOTHING", 0, configPath);
+    }
+    else {
+        WritePrivateProfileInt(appName, L"CLOTHING", CLOTHING_NUMBER, configPath);
+    }
+
     KillTimer(pSprite->GetHandle(), IDT_TRIGGER_ANIMATION);
     ReleaseSprite(pSprite);
     DeleteAnimationAction(CLOTHES_A_ACTION_BLINK);

@@ -3,6 +3,7 @@
 #include "../Kaolla/StateMachine.h"
 #include "resource.h"
 #include "../Kaolla/random.h"
+#include "../Mei/Config.h"
 
 constexpr auto IDT_TRIGGER_ANIMATION = 10001;
 
@@ -79,8 +80,12 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
     OTHER_ACTION = CreateAnimationAction(INIT_FRAMES, 1, 50, IDR_WAVE4, FALSE);
 
+    LPCWSTR appName = L"Mitsune";
+
     OPTIONS options = { 75, TRUE, TRUE, SELECTION::StartMenu };
-    pSprite = CreateSprite(hInstance, L"Mitsune", 96, 88, &options);
+    LoadOptions(hInstance, appName, &options);
+
+    pSprite = CreateSprite(hInstance, appName, 96, 88, &options);
     pSprite->SetClickHook(MouseLeftButtonHook);
     pSprite->SetFrame(USUAL);
     pSprite->Show();
@@ -160,6 +165,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
     stateMachine->doAction(StateEvent::CONTINUE);
 
     int ret = pSprite->EventLoop();
+    const OPTIONS* lastOptions = pSprite->GetOptions();
+    SaveOptions(hInstance, appName, lastOptions);
+
     stateMachine->doAction(StateEvent::EXIT);
     delete stateMachine;
     ReleaseSprite(pSprite);

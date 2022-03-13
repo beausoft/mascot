@@ -2,6 +2,7 @@
 #include "../Sprite/ISprite.h"
 #include "resource.h"
 #include "../Kaolla/random.h"
+#include "Config.h"
 
 constexpr auto IDT_TRIGGER_ANIMATION = 10001;
 
@@ -72,9 +73,12 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
     ACTION_2 = CreateAnimationAction(&USUAL, 1, 80, IDR_WAVE4, FALSE);
     ACTION_3 = CreateAnimationAction(&USUAL, 1, 80, IDR_WAVE5, FALSE);
 
-    OPTIONS options = { 50, TRUE, TRUE, SELECTION::StartMenu };
+    LPCWSTR appName = L"Mei";
 
-	pSprite = CreateSprite(hInstance, L"Mei", 80, 104, &options);
+    OPTIONS options = { 50, TRUE, TRUE, SELECTION::StartMenu };
+    LoadOptions(hInstance, appName, &options);
+
+	pSprite = CreateSprite(hInstance, appName, 80, 104, &options);
     pSprite->SetFrame(USUAL);
 	pSprite->Show();
     pSprite->PlayAnimation(INIT_ACTION);
@@ -87,6 +91,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
     SetTimer(pSprite->GetHandle(), IDT_TRIGGER_ANIMATION, 8000, ActionTimer);
 
 	int ret = pSprite->EventLoop();
+    const OPTIONS* lastOptions = pSprite->GetOptions();
+    SaveOptions(hInstance, appName, lastOptions);
 
     KillTimer(pSprite->GetHandle(), IDT_TRIGGER_ANIMATION);
 
