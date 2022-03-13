@@ -18,7 +18,7 @@ BOOL GetConfigPath(HINSTANCE hInstance, LPWSTR lpFilename, DWORD nSize) {
 }
 
 void LoadOptions(HINSTANCE hInstance, LPCWSTR appName, OPTIONS* options) {
-	WCHAR configFullPath[MAX_PATH];
+	WCHAR configFullPath[MAX_PATH] = { 0 };
 	GetConfigPath(hInstance, configFullPath, MAX_PATH);
 	options->WINPOS = GetPrivateProfileInt(appName, L"WINPOS", 30, configFullPath);
 	options->SOUND = GetPrivateProfileInt(appName, L"UseSound", 1, configFullPath);
@@ -33,7 +33,7 @@ BOOL WritePrivateProfileInt(_In_opt_ LPCWSTR lpAppName, _In_opt_ LPCWSTR lpKeyNa
 }
 
 void SaveOptions(HINSTANCE hInstance, LPCWSTR appName, const OPTIONS* options) {
-	WCHAR configFullPath[MAX_PATH];
+	WCHAR configFullPath[MAX_PATH] = { 0 };
 	GetConfigPath(hInstance, configFullPath, MAX_PATH);
 	WritePrivateProfileInt(appName, L"WINPOS", options->WINPOS, configFullPath);
 	WritePrivateProfileInt(appName, L"UseSound", options->SOUND, configFullPath);

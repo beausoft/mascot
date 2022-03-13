@@ -542,7 +542,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
     OPTIONS options = { 90, TRUE, TRUE, SELECTION::StartMenu };
     LoadOptions(hInstance, appName, &options);
-    WCHAR configPath[MAX_PATH];
+    WCHAR configPath[MAX_PATH] = { 0 };
     GetConfigPath(hInstance, configPath, MAX_PATH);
     INT CLOTHING = GetPrivateProfileInt(appName, L"CLOTHING", 0, configPath);
     if (CLOTHING == 0) {
