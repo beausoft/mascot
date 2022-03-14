@@ -13,8 +13,8 @@ BOOL isExplorer(_In_ HWND hWnd) {
     if (GetWindowThreadProcessId(hWnd, &dwPid)) {
         HANDLE hProcess = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE, dwPid);
         if (NULL != hProcess) {
-            WCHAR fileFullName[256];
-            if (GetProcessImageFileName(hProcess, fileFullName, 256)) {
+            WCHAR fileFullName[MAX_PATH] = { 0 };
+            if (GetProcessImageFileName(hProcess, fileFullName, MAX_PATH)) {
                 std::wstring fileFullNameString(fileFullName);
                 std::wstring::size_type spInd = fileFullNameString.find_last_of('\\', fileFullNameString.length());
                 if (std::wstring::npos != spInd) {
@@ -31,7 +31,7 @@ BOOL isExplorer(_In_ HWND hWnd) {
 }
 
 BOOL isSelf(_In_ HWND hWnd) {
-    DWORD dwPid;
+    DWORD dwPid = NULL;
     if (GetWindowThreadProcessId(hWnd, &dwPid)) {
         DWORD dwMyPid = GetCurrentProcessId();
         if (dwPid == dwMyPid) {
@@ -73,7 +73,7 @@ CSprite::CSprite(HINSTANCE hInstance, LPCWSTR spriteName, INT nWidth, INT nHeigh
     WCHAR szWindowClass[32] = { 0 };
     wsprintf(szWindowClass, L"BeausoftMascot-%s-%d", spriteName, WndIdx++);
 
-    WNDCLASSEXW wcex;
+    WNDCLASSEXW wcex = { 0 };
     wcex.cbSize = sizeof(WNDCLASSEX);
     wcex.style = CS_HREDRAW | CS_VREDRAW;
     wcex.lpfnWndProc = CSprite::WndProc;
