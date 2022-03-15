@@ -39,6 +39,9 @@
     <Image Include="images\3.bmp">
       <Filter>资源文件</Filter>
     </Image>
+    <Image Include="128.ico">
+      <Filter>资源文件</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Media Include="sounds\1.wav">

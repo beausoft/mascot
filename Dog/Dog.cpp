@@ -25,10 +25,10 @@ void DeleteAnimationAction(const ACTION* pAction)
 }
 
 ISprite* pSprite = NULL;
-const ACTION* BLINK_ACTION = NULL;
+const ACTION* ACTION_1 = NULL;
 const ACTION* ACTION_2 = NULL;
 const ACTION* ACTION_3 = NULL;
-const ACTION* ACTION_1 = NULL;
+const ACTION* BLINK_ACTION = NULL;
 
 VOID CALLBACK ActionTimer(HWND hWnd, UINT uMsg, UINT_PTR idEvent, DWORD dwTime) {
     if (idEvent == IDT_TRIGGER_ANIMATION) {
@@ -59,12 +59,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
     FRAME INIT_FRAMES[] = { FRAME_1 };
     ACTION_1 = CreateAnimationAction(INIT_FRAMES, 1, 50, IDR_WAVE1, FALSE);
+    ACTION_2 = CreateAnimationAction(INIT_FRAMES, 1, 50, IDR_WAVE2, FALSE);
+    ACTION_3 = CreateAnimationAction(INIT_FRAMES, 1, 50, IDR_WAVE3, FALSE);
 
     FRAME BIINK_FRAMES[] = { FRAME_1, FRAME_2 ,FRAME_3, FRAME_2, FRAME_3, FRAME_2, FRAME_3, FRAME_1 };
     BLINK_ACTION = CreateAnimationAction(BIINK_FRAMES, 8, 130, NULL, FALSE);
-
-    ACTION_2 = CreateAnimationAction(INIT_FRAMES, 1, 50, IDR_WAVE2, FALSE);
-    ACTION_3 = CreateAnimationAction(INIT_FRAMES, 1, 50, IDR_WAVE3, FALSE);
 
     LPCWSTR appName = L"Dog";
     OPTIONS options = { 50, TRUE, TRUE, SELECTION::StartMenu };

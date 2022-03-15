@@ -156,6 +156,7 @@
     <ResourceCompile Include="Dog.rc" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="128.ico" />
     <Image Include="images\1.bmp" />
     <Image Include="images\2.bmp" />
     <Image Include="images\3.bmp" />
