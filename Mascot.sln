@@ -15,6 +15,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Sara", "Sara\Sara.vcxproj",
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Naru", "Naru\Naru.vcxproj", "{0FD5EDA3-9BA1-4B78-8DAA-404BC9ED77F4}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Dog", "Dog\Dog.vcxproj", "{D3F726A3-6C41-4344-BD7E-7DB308DDA7CC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -71,6 +73,14 @@ Global
 		{0FD5EDA3-9BA1-4B78-8DAA-404BC9ED77F4}.Release|x64.Build.0 = Release|x64
 		{0FD5EDA3-9BA1-4B78-8DAA-404BC9ED77F4}.Release|x86.ActiveCfg = Release|Win32
 		{0FD5EDA3-9BA1-4B78-8DAA-404BC9ED77F4}.Release|x86.Build.0 = Release|Win32
+		{D3F726A3-6C41-4344-BD7E-7DB308DDA7CC}.Debug|x64.ActiveCfg = Debug|x64
+		{D3F726A3-6C41-4344-BD7E-7DB308DDA7CC}.Debug|x64.Build.0 = Debug|x64
+		{D3F726A3-6C41-4344-BD7E-7DB308DDA7CC}.Debug|x86.ActiveCfg = Debug|Win32
+		{D3F726A3-6C41-4344-BD7E-7DB308DDA7CC}.Debug|x86.Build.0 = Debug|Win32
+		{D3F726A3-6C41-4344-BD7E-7DB308DDA7CC}.Release|x64.ActiveCfg = Release|x64
+		{D3F726A3-6C41-4344-BD7E-7DB308DDA7CC}.Release|x64.Build.0 = Release|x64
+		{D3F726A3-6C41-4344-BD7E-7DB308DDA7CC}.Release|x86.ActiveCfg = Release|Win32
+		{D3F726A3-6C41-4344-BD7E-7DB308DDA7CC}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
