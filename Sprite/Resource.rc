@@ -71,17 +71,15 @@ BEGIN
     CONTROL         "Animation",IDC_CANIMATION,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,100,92,92,10
 END
 
-IDD_ABOUT DIALOGEX 0, 0, 170, 91
+IDD_ABOUT DIALOGEX 0, 0, 170, 75
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "关于"
 FONT 9, "Microsoft Sans Serif", 400, 0, 0x0
 BEGIN
-    DEFPUSHBUTTON   "确定",IDOK,111,69,50,14
-    LTEXT           "桌面精灵重制版",IDC_STATIC,6,5,48,8
-    LTEXT           "原作品版权",IDC_STATIC,6,29,34,8
-    LTEXT           "KODANSHA/LOVEHINA ONSEN-KUMIAI/TV TOKYO",IDC_STATIC,6,53,157,8
-    LTEXT           "KEN AKAMATSU",IDC_STATIC,6,41,53,8
-    LTEXT           "重置的目的只是个人喜好，不可用于商业用途",IDC_STATIC,6,17,134,8
+    DEFPUSHBUTTON   "确定",IDOK,112,55,50,14
+    LTEXT           "Windows桌面精灵 V1.0",IDC_STATIC,49,5,70,8
+    CONTROL         "所用图片以及音频均来自网络，开发此程序目的只是为了学习交流，源码已开源在<a href=""https://github.com/beausoft/mascot"">GitHub</a>，欢迎大家来Star or Fork，共同学习进步！",IDC_SYSLINK,
+                    "SysLink",WS_TABSTOP,6,19,157,31,WS_EX_STATICEDGE
 END
 
 
@@ -91,6 +89,11 @@ END
 //
 
 IDD_DIALOG2 AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_ABOUT AFX_DIALOG_LAYOUT
 BEGIN
     0
 END
@@ -120,12 +123,12 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "Beausoft"
             VALUE "FileDescription", "桌面精灵"
-            VALUE "FileVersion", "1.0.0.1"
+            VALUE "FileVersion", "1.0"
             VALUE "InternalName", "Sprite.dll"
             VALUE "LegalCopyright", "Copyright (C) 2022"
             VALUE "OriginalFilename", "Sprite.dll"
-            VALUE "ProductName", "桌面精灵重制版"
-            VALUE "ProductVersion", "1.0.0.1"
+            VALUE "ProductName", "Windows桌面精灵"
+            VALUE "ProductVersion", "1.0"
         END
     END
     BLOCK "VarFileInfo"
@@ -151,6 +154,21 @@ BEGIN
         MENUITEM "关闭(&X)",                      ID_POPUP_EXIT
     END
 END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO
+BEGIN
+    IDD_ABOUT, DIALOG
+    BEGIN
+    END
+END
+#endif    // APSTUDIO_INVOKED
 
 #endif    // 中文(简体，中国) resources
 /////////////////////////////////////////////////////////////////////////////

@@ -2,9 +2,11 @@
 // Microsoft Visual C++ 生成的包含文件。
 // 供 Resource.rc 使用
 //
-#define IDR_MENUPOPUP                   114
 #define IDD_OPTIONSBOX                  112
+#define IDR_MENUPOPUP                   114
 #define IDD_ABOUT                       115
+#define IDC_SYSLINK2                    1002
+#define IDC_SYSLINK                     1002
 #define IDC_SWINPOS                     1005
 #define IDC_EWNDPOS                     1006
 #define IDC_REITHER                     1007
@@ -22,9 +24,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        104
+#define _APS_NEXT_RESOURCE_VALUE        105
 #define _APS_NEXT_COMMAND_VALUE         40002
-#define _APS_NEXT_CONTROL_VALUE         1001
+#define _APS_NEXT_CONTROL_VALUE         1003
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

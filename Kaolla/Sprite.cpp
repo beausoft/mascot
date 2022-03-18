@@ -6,6 +6,7 @@
 #include <string>
 #include <algorithm>
 #include <vector>
+#include <Commctrl.h>
 
 BOOL isExplorer(_In_ HWND hWnd) {
     DWORD dwPid;
@@ -462,12 +463,28 @@ void Sprite::OnMouseMove(HWND hwnd, int x, int y, UINT keyFlags)
 }
 
 INT_PTR CALLBACK AboutDialogProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam) {
-    UNREFERENCED_PARAMETER(lParam);
     switch (message)
     {
     case WM_INITDIALOG:
         return (INT_PTR)TRUE;
-
+    case WM_NOTIFY:
+    {
+        switch (((LPNMHDR)lParam)->code)
+        {
+        case NM_CLICK:
+        case NM_RETURN:
+        {
+            PNMLINK pNMLink = (PNMLINK)lParam;
+            LITEM item = pNMLink->item;
+            HWND hLink = GetDlgItem(hDlg, IDC_SYSLINK);
+            if ((((LPNMHDR)lParam)->hwndFrom == hLink) && (item.iLink == 0)) {
+                ShellExecute(NULL, L"open", item.szUrl, NULL, NULL, SW_SHOW);
+            }
+        }
+        return (INT_PTR)TRUE;
+        }
+        break;
+    }
     case WM_COMMAND:
         if (LOWORD(wParam) == IDOK || LOWORD(wParam) == IDCANCEL)
         {

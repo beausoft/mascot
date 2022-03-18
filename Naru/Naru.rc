@@ -68,13 +68,13 @@ BEGIN
         BLOCK "080404b0"
         BEGIN
             VALUE "CompanyName", "Beausoft"
-            VALUE "FileDescription", "桌面精灵重置版"
-            VALUE "FileVersion", "1.0.0.1"
+            VALUE "FileDescription", "Windows桌面精灵"
+            VALUE "FileVersion", "1.0"
             VALUE "InternalName", "Naru.exe"
             VALUE "LegalCopyright", "Copyright (C) 2022"
             VALUE "OriginalFilename", "Naru.exe"
             VALUE "ProductName", "Naru"
-            VALUE "ProductVersion", "1.0.0.1"
+            VALUE "ProductVersion", "1.0"
         END
     END
     BLOCK "VarFileInfo"

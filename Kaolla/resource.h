@@ -29,6 +29,7 @@
 #define IDB_HYPSOKINESIS_7              129
 #define IDB_HYPSOKINESIS_8              130
 #define IDI_ICON_MAIN                   131
+#define IDC_SYSLINK                     1002
 #define IDC_SLIDER3                     1005
 #define IDC_SLIDER_WINPOS               1005
 #define IDC_SWINPOS                     1005
